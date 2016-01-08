@@ -2,6 +2,7 @@
 // cat `find . -name "[0-9][0-9].a" | sort` > rael_ou.txt
 // g++ -o main codigo.cpp -Wall -Wextra -Wshadow -O2
 
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
