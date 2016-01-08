@@ -1,0 +1,505 @@
+
+
+Formatação dos bits
+
+
+    0                   1                   2                   3   
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |A|T|L|    Size   -             -             -                 |
+   |L|Y|Z|     of    - Character 0 - Character 1 -       ...       |
+   |P|P|7|  alphabet -             -             -                 |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | Character N -                  Text compressed                |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+ALP = Tipo do Alfabeto
+
+      Valor    Significado
+      ----     -----------
+       0       Alfabeto Estático
+       1       Alfabeto Dinâmico (uso de Move-to-Front transform)
+
+TYP = Tipo de arquivo
+
+      Valor    Significado
+      ----     -----------
+       0       Arquivo de texto comprimido 
+       1       Índice (árvore de sufixos) comprimida
+
+LZ7 = Tipo de codificação utilizada
+
+      Valor    Significado
+      ----     -----------
+       0       LZ 77
+       1       LZ 78
+
+Size of alphabet = Quantidade de caracteres no alfabeto do conteúdo codificado
+                   Quantidade variável de bits
+
+Character 0 = Valor do primeiro caractere do alfabeto
+              Quantidade variável de bits
+
+Character 1 = Valor do segundo caractere do alfabeto
+              Quantidade variável de bits
+
+Character N = Valor do (N+1)-ésimo caractere do alfabeto
+              Quantidade variável de bits
+
+Text compressed = Texto, ou índice, comprimido codificado
+
+
+
+
+
+
+
+
+
+
+
+3.1.  Header Format
+
+  TCP segments are sent as internet datagrams.  The Internet Protocol
+  header carries several information fields, including the source and
+  destination host addresses [2].  A TCP header follows the internet
+  header, supplying information specific to the TCP protocol.  This
+  division allows for the existence of host level protocols other than
+  TCP.
+
+  TCP Header Format
+
+                                    
+    0                   1                   2                   3   
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |          Source Port          |       Destination Port        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        Sequence Number                        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Acknowledgment Number                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Data |           |U|A|P|R|S|F|                               |
+   | Offset| Reserved  |R|C|S|S|Y|I|            Window             |
+   |       |           |G|K|H|T|N|N|                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |           Checksum            |         Urgent Pointer        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Options                    |    Padding    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             data                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                            TCP Header Format
+
+          Note that one tick mark represents one bit position.
+
+                               Figure 3.
+
+  Source Port:  16 bits
+
+    The source port number.
+
+  Destination Port:  16 bits
+
+    The destination port number.
+
+
+
+
+                                                               [Page 15]
+
+
+                                                          September 1981
+Transmission Control Protocol
+Functional Specification
+
+
+
+  Sequence Number:  32 bits
+
+    The sequence number of the first data octet in this segment (except
+    when SYN is present). If SYN is present the sequence number is the
+    initial sequence number (ISN) and the first data octet is ISN+1.
+
+  Acknowledgment Number:  32 bits
+
+    If the ACK control bit is set this field contains the value of the
+    next sequence number the sender of the segment is expecting to
+    receive.  Once a connection is established this is always sent.
+
+  Data Offset:  4 bits
+
+    The number of 32 bit words in the TCP Header.  This indicates where
+    the data begins.  The TCP header (even one including options) is an
+    integral number of 32 bits long.
+
+  Reserved:  6 bits
+
+    Reserved for future use.  Must be zero.
+
+  Control Bits:  6 bits (from left to right):
+
+    URG:  Urgent Pointer field significant
+    ACK:  Acknowledgment field significant
+    PSH:  Push Function
+    RST:  Reset the connection
+    SYN:  Synchronize sequence numbers
+    FIN:  No more data from sender
+
+  Window:  16 bits
+
+    The number of data octets beginning with the one indicated in the
+    acknowledgment field which the sender of this segment is willing to
+    accept.
+
+  Checksum:  16 bits
+
+    The checksum field is the 16 bit one's complement of the one's
+    complement sum of all 16 bit words in the header and text.  If a
+    segment contains an odd number of header and text octets to be
+    checksummed, the last octet is padded on the right with zeros to
+    form a 16 bit word for checksum purposes.  The pad is not
+    transmitted as part of the segment.  While computing the checksum,
+    the checksum field itself is replaced with zeros.
+
+    The checksum also covers a 96 bit pseudo header conceptually
+
+
+[Page 16]                                                               
+
+
+September 1981                                                          
+                                           Transmission Control Protocol
+                                                Functional Specification
+
+
+
+    prefixed to the TCP header.  This pseudo header contains the Source
+    Address, the Destination Address, the Protocol, and TCP length.
+    This gives the TCP protection against misrouted segments.  This
+    information is carried in the Internet Protocol and is transferred
+    across the TCP/Network interface in the arguments or results of
+    calls by the TCP on the IP.
+
+                     +--------+--------+--------+--------+
+                     |           Source Address          |
+                     +--------+--------+--------+--------+
+                     |         Destination Address       |
+                     +--------+--------+--------+--------+
+                     |  zero  |  PTCL  |    TCP Length   |
+                     +--------+--------+--------+--------+
+
+      The TCP Length is the TCP header length plus the data length in
+      octets (this is not an explicitly transmitted quantity, but is
+      computed), and it does not count the 12 octets of the pseudo
+      header.
+
+  Urgent Pointer:  16 bits
+
+    This field communicates the current value of the urgent pointer as a
+    positive offset from the sequence number in this segment.  The
+    urgent pointer points to the sequence number of the octet following
+    the urgent data.  This field is only be interpreted in segments with
+    the URG control bit set.
+
+  Options:  variable
+
+    Options may occupy space at the end of the TCP header and are a
+    multiple of 8 bits in length.  All options are included in the
+    checksum.  An option may begin on any octet boundary.  There are two
+    cases for the format of an option:
+
+      Case 1:  A single octet of option-kind.
+
+      Case 2:  An octet of option-kind, an octet of option-length, and
+               the actual option-data octets.
+
+    The option-length counts the two octets of option-kind and
+    option-length as well as the option-data octets.
+
+    Note that the list of options may be shorter than the data offset
+    field might imply.  The content of the header beyond the
+    End-of-Option option must be header padding (i.e., zero).
+
+    A TCP must implement all options.
+
+
+                                                               [Page 17]
+
+
+                                                          September 1981
+Transmission Control Protocol
+Functional Specification
+
+
+
+    Currently defined options include (kind indicated in octal):
+
+      Kind     Length    Meaning
+      ----     ------    -------
+       0         -       End of option list.
+       1         -       No-Operation.
+       2         4       Maximum Segment Size.
+      
+
+    Specific Option Definitions
+
+      End of Option List
+
+        +--------+
+        |00000000|
+        +--------+
+         Kind=0
+
+        This option code indicates the end of the option list.  This
+        might not coincide with the end of the TCP header according to
+        the Data Offset field.  This is used at the end of all options,
+        not the end of each option, and need only be used if the end of
+        the options would not otherwise coincide with the end of the TCP
+        header.
+
+      No-Operation
+
+        +--------+
+        |00000001|
+        +--------+
+         Kind=1
+
+        This option code may be used between options, for example, to
+        align the beginning of a subsequent option on a word boundary.
+        There is no guarantee that senders will use this option, so
+        receivers must be prepared to process options even if they do
+        not begin on a word boundary.
+
+      Maximum Segment Size
+
+        +--------+--------+---------+--------+
+        |00000010|00000100|   max seg size   |
+        +--------+--------+---------+--------+
+         Kind=2   Length=4
+
+
+
+
+
+
+[Page 18]                                                               
+
+
+September 1981                                                          
+                                           Transmission Control Protocol
+                                                Functional Specification
+
+
+
+        Maximum Segment Size Option Data:  16 bits
+
+          If this option is present, then it communicates the maximum
+          receive segment size at the TCP which sends this segment.
+          This field must only be sent in the initial connection request
+          (i.e., in segments with the SYN control bit set).  If this
+          option is not used, any segment size is allowed.
+
+  Padding:  variable
+
+    The TCP header padding is used to ensure that the TCP header ends
+    and data begins on a 32 bit boundary.  The padding is composed of
+    zeros.
+
+3.2.  Terminology
+
+  Before we can discuss very much about the operation of the TCP we need
+  to introduce some detailed terminology.  The maintenance of a TCP
+  connection requires the remembering of several variables.  We conceive
+  of these variables being stored in a connection record called a
+  Transmission Control Block or TCB.  Among the variables stored in the
+  TCB are the local and remote socket numbers, the security and
+  precedence of the connection, pointers to the user's send and receive
+  buffers, pointers to the retransmit queue and to the current segment.
+  In addition several variables relating to the send and receive
+  sequence numbers are stored in the TCB.
+
+    Send Sequence Variables
+
+      SND.UNA - send unacknowledged
+      SND.NXT - send next
+      SND.WND - send window
+      SND.UP  - send urgent pointer
+      SND.WL1 - segment sequence number used for last window update
+      SND.WL2 - segment acknowledgment number used for last window
+                update
+      ISS     - initial send sequence number
+
+    Receive Sequence Variables
+
+      RCV.NXT - receive next
+      RCV.WND - receive window
+      RCV.UP  - receive urgent pointer
+      IRS     - initial receive sequence number
+
+
+
+
+
+
+                                                               [Page 19]
+
+
+                                                          September 1981
+Transmission Control Protocol
+Functional Specification
+
+
+
+  The following diagrams may help to relate some of these variables to
+  the sequence space.
+
+  Send Sequence Space
+
+                   1         2          3          4      
+              ----------|----------|----------|---------- 
+                     SND.UNA    SND.NXT    SND.UNA        
+                                          +SND.WND        
+
+        1 - old sequence numbers which have been acknowledged  
+        2 - sequence numbers of unacknowledged data            
+        3 - sequence numbers allowed for new data transmission 
+        4 - future sequence numbers which are not yet allowed  
+
+                          Send Sequence Space
+
+                               Figure 4.
+    
+    
+
+  The send window is the portion of the sequence space labeled 3 in
+  figure 4.
+
+  Receive Sequence Space
+
+                       1          2          3      
+                   ----------|----------|---------- 
+                          RCV.NXT    RCV.NXT        
+                                    +RCV.WND        
+
+        1 - old sequence numbers which have been acknowledged  
+        2 - sequence numbers allowed for new reception         
+        3 - future sequence numbers which are not yet allowed  
+
+                         Receive Sequence Space
+
+                               Figure 5.
+    
+    
+
+  The receive window is the portion of the sequence space labeled 2 in
+  figure 5.
+
+  There are also some variables used frequently in the discussion that
+  take their values from the fields of the current segment.
+
+
+
+
+[Page 20]                                                               
+
+
+September 1981                                                          
+                                           Transmission Control Protocol
+                                                Functional Specification
+
+
+
+    Current Segment Variables
+
+      SEG.SEQ - segment sequence number
+      SEG.ACK - segment acknowledgment number
+      SEG.LEN - segment length
+      SEG.WND - segment window
+      SEG.UP  - segment urgent pointer
+      SEG.PRC - segment precedence value
+
+  A connection progresses through a series of states during its
+  lifetime.  The states are:  LISTEN, SYN-SENT, SYN-RECEIVED,
+  ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2, CLOSE-WAIT, CLOSING, LAST-ACK,
+  TIME-WAIT, and the fictional state CLOSED.  CLOSED is fictional
+  because it represents the state when there is no TCB, and therefore,
+  no connection.  Briefly the meanings of the states are:
+
+    LISTEN - represents waiting for a connection request from any remote
+    TCP and port.
+
+    SYN-SENT - represents waiting for a matching connection request
+    after having sent a connection request.
+
+    SYN-RECEIVED - represents waiting for a confirming connection
+    request acknowledgment after having both received and sent a
+    connection request.
+
+    ESTABLISHED - represents an open connection, data received can be
+    delivered to the user.  The normal state for the data transfer phase
+    of the connection.
+
+    FIN-WAIT-1 - represents waiting for a connection termination request
+    from the remote TCP, or an acknowledgment of the connection
+    termination request previously sent.
+
+    FIN-WAIT-2 - represents waiting for a connection termination request
+    from the remote TCP.
+
+    CLOSE-WAIT - represents waiting for a connection termination request
+    from the local user.
+
+    CLOSING - represents waiting for a connection termination request
+    acknowledgment from the remote TCP.
+
+    LAST-ACK - represents waiting for an acknowledgment of the
+    connection termination request previously sent to the remote TCP
+    (which includes an acknowledgment of its connection termination
+    request).
+
+
+
+                                                               [Page 21]
+
+
+                                                          September 1981
+Transmission Control Protocol
+Functional Specification
+
+
+
+    TIME-WAIT - represents waiting for enough time to pass to be sure
+    the remote TCP received the acknowledgment of its connection
+    termination request.
+
+    CLOSED - represents no connection state at all.
+
+  A TCP connection progresses from one state to another in response to
+  events.  The events are the user calls, OPEN, SEND, RECEIVE, CLOSE,
+  ABORT, and STATUS; the incoming segments, particularly those
+  containing the SYN, ACK, RST and FIN flags; and timeouts.
+
+  The state diagram in figure 6 illustrates only state changes, together
+  with the causing events and resulting actions, but addresses neither
+  error conditions nor actions which are not connected with state
+  changes.  In a later section, more detail is offered with respect to
+  the reaction of the TCP to events.
+
+  NOTE BENE:  this diagram is only a summary and must not be taken as
+  the total specification.
+
+https://www.rfc-editor.org/rfc/rfc793.txt
+
+
+
+
+    0                   1                   2                   3   
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |A|                             |                               |
+   |L|                             |                               |
+   |P|                             |                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
