@@ -2,11 +2,11 @@
 	
 const int OFFSET = 128;
 
-Alphabet::Alphabet(bool dynamic) {
+Alphabet::Alphabet(bool isStatic) {
 	lista = (char*) malloc(ALPHA_LENGTH * sizeof(char));
 	size = 0;
 	
-	if(! dynamic) { // Array (para alfabeto estático) mapeando os índices
+	if(isStatic) { // Array (para alfabeto estático) mapeando os índices
 		index = (int*) malloc(ALPHA_LENGTH * sizeof(int));
 	}
 }
@@ -102,7 +102,7 @@ void Alphabet::clear() {
 
 
 void testAlphabet() {
-	Alphabet alpha = Alphabet();
+	Alphabet alpha = Alphabet(false);
 	alpha.push('a');
 	alpha.push('b');
 	alpha.push('c');

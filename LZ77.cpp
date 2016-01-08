@@ -297,7 +297,7 @@ void LZ77::decoding(File &file, Alphabet &alpha, Stream &stream, int textSize) {
 	char c;
 	// Enquanto há conteúdo no arquivo
 	int z = 0;
-	while(! file.terminated && z < textSize) {
+	while(! file.terminated) {
 		
 		int pos = deserialize_int(file);
 		int cnt = deserialize_int(file);
@@ -321,16 +321,17 @@ void LZ77::decoding(File &file, Alphabet &alpha, Stream &stream, int textSize) {
 			++z;
 		}
 		
-		if(z == textSize) break;
-		
 		// Add idx-character to text
 		c = alpha.getChar(idx);
+		
+		// Terminal
+		if(c == '\0') break;
+		
 		stream.write(c);
 		dictionary.push(c);
 		++z;
 	}
 	
-	stream.close();
 //	printf("          s %s\n", s);
 }
 

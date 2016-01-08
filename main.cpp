@@ -31,6 +31,7 @@
 #include "coding_integers.h"
 #include "alphabet_index.h"
 #include "LZ77.h"
+#include "LZ78.h"
 #include "suffix_tree.h"
 #include "serial.h"
 
@@ -38,6 +39,12 @@ using namespace std;
 
 const int MAX_PATT_LEN = 1000;
 char *index_name;
+
+// Opções
+bool multiple_patterns = false;
+bool count_only = false;
+bool alphabetStatic = true;
+bool isLZ77 = false;
 
 //concatena ext no nome do arquivo
 //se possível, substitui a extensão dele
@@ -63,6 +70,52 @@ void load_compress_name(char *original) {
 	load_name(original, ".com");
 }
 
+void readOptions(int argc, char **argv, int params = 1) {
+	for(int i = 2; i < (argc - params); i++) {
+		if (!strcmp(argv[i], "-p") ||
+			!strcmp(argv[i], "--pattern")) 
+			multiple_patterns = true;
+		
+		else if (!strcmp(argv[i], "-c") ||
+				!strcmp(argv[i], "--count")) 
+			count_only = true;
+
+		else if (!strcmp(argv[i], "-7") ||
+			!strcmp(argv[i], "--LZ77")) 
+			isLZ77 = true;
+			
+		else if (!strcmp(argv[i], "-8") ||
+				!strcmp(argv[i], "--LZ78")) 
+			isLZ77 = false;
+		else {
+		
+			puts("Opção não reconhecida");
+			throw 1;
+		}
+	}
+}
+
+void encoding(Stream &stream, Alphabet &alpha, File &file) {
+	if(isLZ77) {
+		LZ77 lz77 = LZ77();
+		lz77.encoding(stream, alpha, file);
+	} else {
+		LZ78 lz78 = LZ78();
+		lz78.encoding(stream, alpha, file);
+	}
+}
+
+void decoding(File &file, Alphabet &alpha, Stream &stream, int textSize) {
+	if(isLZ77) {
+		LZ77 lz77 = LZ77();
+		lz77.decoding(file, alpha, stream, textSize);
+	} else {
+		LZ78 lz78 = LZ78();
+		lz78.decoding(file, alpha, stream, textSize);
+	}
+}
+
+
 #define OFFSET 128
 #define CHARACTER_SIZE (1 << 9)
 bool character[CHARACTER_SIZE];
@@ -71,8 +124,11 @@ int do_index(int argc, char **argv) {
 	if (argc < 3)
 		return 1;
 	
+	// Options
+	readOptions(argc, argv, 1);
+	
 	// Reading text file & building alphabet
-	File file = File(argv[2], "r");
+	File file = File(argv[argc-1], "r");
 	if(file.file == NULL)
 		return 1;
 	int fileSize = file.totalSize;
@@ -82,6 +138,7 @@ int do_index(int argc, char **argv) {
 		return 1;
 	}
 	
+	//TODO Deveria alterar o valor de MAXLEN ao invés de fazer isso, né @Mario ?
 	fileSize = std::min(fileSize, 25000000);
 	
 	// No one character was seen ... until now!
@@ -91,7 +148,6 @@ int do_index(int argc, char **argv) {
 	str[fileSize] = '\0';
 	
 	lines = 1;
-	//for(int i = 0; ! file.terminated; ++i) {
 	for(int i = 0; i < fileSize; ++i) {
 		char c = file.read_char();
 		str[i] = c;
@@ -103,8 +159,9 @@ int do_index(int argc, char **argv) {
 	
 	file.close();
 	
+	
 	// Building alphabet
-	Alphabet alpha = Alphabet();
+	Alphabet alpha = Alphabet(alphabetStatic);
 	for(int i = 0; i < CHARACTER_SIZE; ++i)
 		if(character[i])
 			alpha.push((char) i - OFFSET);
@@ -112,21 +169,19 @@ int do_index(int argc, char **argv) {
 	// Adding the null-character
 	alpha.push('\0');
 	
-	puts("A");
 	// Building the suffix tree
 	build_suffix_tree(fileSize);
-	puts("B");
 	
 	// Creating filename to result file
-	load_index_name(argv[2]);
+	load_index_name(argv[argc-1]);
 	
 	file = File(index_name, "w");
 	if(file.file == NULL)
 		return 1;
 	
 	// Header
-	file.write_bit(0); // Static alphabet
-	file.write_bit(0); // LZ 77
+	file.write_bit(alphabetStatic); // Static alphabet
+	file.write_bit(isLZ77); // LZ 77
 	
 	// Alphabet
 	alpha.writeTo(file);
@@ -139,10 +194,9 @@ int do_index(int argc, char **argv) {
 	serialize_int(file, fileSize); // Tamanho do texto
 	serialize_int(file, lines); // número de linhas do texto
 	
-	puts("C");
-	LZ77 lz77 = LZ77();
+	// Codificando texto original
 	Stream stream = Stream(str);
-	lz77.encoding(stream, alpha, file); // Codificando texto original
+	encoding(stream, alpha, file);
 	
 	file.close();
 	free(index_name);
@@ -164,22 +218,8 @@ int do_search(int argc, char **argv) {
 	if (argc < 4)
 		return 1;
 	
-	bool multiple_patterns = false;
-	bool count_only = false;
-	
-	//lê as opções de linha de comando
-	for(int i = 2; i < argc-2; i++) {
-		if (!strcmp(argv[i], "-p") ||
-			!strcmp(argv[i], "--pattern")) 
-			multiple_patterns = true;
-		else if (!strcmp(argv[i], "-c") ||
-				!strcmp(argv[i], "--count")) 
-			count_only = true;
-		else {
-			puts("Opção não reconhecida");
-			return 1;
-		}
-	}
+	// lê as opções de linha de comando
+	readOptions(argc, argv, 2);
 	
 	// Reading the file
 	load_index_name(argv[argc-2]);
@@ -189,11 +229,11 @@ int do_search(int argc, char **argv) {
 		return 1;
 	
 	// Headers
-	bool alphabetStatic = file.read_bit();
-	bool is77 = file.read_bit();
+	alphabetStatic = file.read_bit();
+	isLZ77 = file.read_bit();
 	
 	// Decoding alphabet
-	Alphabet alpha;
+	Alphabet alpha = Alphabet(alphabetStatic);
 	alpha.decoding(file);
 	
 	// Building the suffix tree
@@ -206,9 +246,10 @@ int do_search(int argc, char **argv) {
 	
 	lines = deserialize_int(file); // número de linhas do texto
 	
+	// Decodificando o texto original
 	Stream stream = Stream(str);
-	LZ77 lz77 = LZ77();
-	lz77.decoding(file, alpha, stream, s_len); // Codificando texto original
+	decoding(file, alpha, stream, s_len);
+	stream.close();
 	//printf("'%s'.", str);
 	
 	file.close();
@@ -247,7 +288,7 @@ int do_search(int argc, char **argv) {
 		do_search(pattern);
 	
 	//mostra os resultados
-	printf("Total de linhas com ocorrências: %d\n", occ.size());
+	printf("Total de linhas com ocorrências: %d\n", (int) occ.size());
 	
 	if (!count_only) {
 		for(std::set<int>::iterator it = occ.begin(); it != occ.end(); it++) {
@@ -273,9 +314,13 @@ int do_search(int argc, char **argv) {
 int do_compress(int argc, char **argv) {
 	if (argc < 3)
 		return 1;
+
+	// Options
+	readOptions(argc, argv, 1);
+	int idxFile = argc - 1;
 	
 	// Reading text file & building alphabet
-	File file = File(argv[2], "r");
+	File file = File(argv[idxFile], "r");
 	if(file.file == NULL)
 		return 1;
 	
@@ -290,7 +335,7 @@ int do_compress(int argc, char **argv) {
 	file.close();
 	
 	// Building alphabet
-	Alphabet alpha = Alphabet();
+	Alphabet alpha = Alphabet(alphabetStatic);
 	for(int i = 0; i < CHARACTER_SIZE; ++i)
 		if(character[i])
 			alpha.push((char) i - OFFSET);
@@ -299,21 +344,20 @@ int do_compress(int argc, char **argv) {
 	alpha.push('\0');
 	
 	// Creating filename to result file
-	load_compress_name(argv[2]);
+	load_compress_name(argv[idxFile]);
 	
-	
-	file = File(argv[2], "r");
+	file = File(argv[idxFile], "r");
 	File result = File(index_name, "w");
 	if(file.file == NULL || result.file == NULL)
 		return 1;
 	
 	// Header
-	result.write_bit(0); // Static alphabet
-	result.write_bit(0); // LZ 77
+	result.write_bit(alphabetStatic); // Static alphabet
+	result.write_bit(isLZ77); // LZ 77
 	
 	// Escrever o nome do arquivo original
-	for(int i = 0; argv[2][i]; ++i)
-		result.write_char(argv[2][i]);
+	for(int i = 0; argv[idxFile][i]; ++i)
+		result.write_char(argv[idxFile][i]);
 	result.write_char('\0');
 	
 	// Alphabet
@@ -322,9 +366,9 @@ int do_compress(int argc, char **argv) {
 	// Text
 	serialize_int(result, fileSize); // Tamanho do texto
 	
-	LZ77 lz77 = LZ77();
+	// Codificando texto original
 	Stream stream = Stream(file);
-	lz77.encoding(stream, alpha, result); // Codificando texto original
+	encoding(stream, alpha, result);
 	
 	file.close();
 	result.close();
@@ -338,14 +382,17 @@ int do_decompress(int argc, char **argv) {
 	if (argc < 3)
 		return 1;
 	
+	//readOptions(argc, argv, 1);
+	int idxFile = argc - 1;
+	
 	// Reading the file
-	File file = File(argv[2], "r");
+	File file = File(argv[idxFile], "r");
 	if(file.file == NULL)
 		return 1;
 	
 	// Headers
-	bool alphabetStatic = file.read_bit();
-	bool is77 = file.read_bit();
+	alphabetStatic = file.read_bit();
+	isLZ77 = file.read_bit();
 	
 	// Filename
 	index_name = (char*) malloc(1024 * sizeof(char));
@@ -355,21 +402,20 @@ int do_decompress(int argc, char **argv) {
 	
 	index_name[p] = '\0';
 	
+	// Arquivo original
 	File target = File(index_name, "w");
 	
 	// Decoding alphabet
-	Alphabet alpha;
+	Alphabet alpha = Alphabet(alphabetStatic);
 	alpha.decoding(file);
 	
 	// Text
 	s_len = deserialize_int(file); // Tamanho do texto
 	Stream stream = Stream(target);
-	
-	LZ77 lz77 = LZ77();
-	lz77.decoding(file, alpha, stream, s_len); // Codificando texto original
+	decoding(file, alpha, stream, s_len);
 	
 	file.close();
-//	target.close();
+	target.close();
 	free(index_name);
 	
 	return 0;
@@ -385,10 +431,18 @@ int main(int argc, char **argv) {
 	if (!strcmp(argv[1], "-h") ||
 		!strcmp(argv[1], "--help")) {
 		puts("Indexar arquivo: ./ipmt index [OPTION] FILE");
+		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77");
+		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78 (opção padrão)");
 		puts("");
 		puts("Buscar em índice: ./ipmt search [OPTION] FILE PATTERN");
 		puts("-p, --pattern: busca todos os padrões do arquivo PATTERN, um por cada linha");
 		puts("-c, --count: mostra a soma das quantidades de ocorrências de cada padrão");
+		puts("");
+		puts("Comprimir arquivo: ./ipmt compress [OPTION] FILE");
+		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77");
+		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78 (opção padrão)");
+		puts("");
+		puts("Descomprimir arquivo: ./ipmt decompress FILE");
 		puts("");
 		puts("Abrir ajuda: ./ipmt -h");
 		puts("Ou           ./ipmt --help");
@@ -407,7 +461,7 @@ int main(int argc, char **argv) {
 	else if (!strcmp(argv[1], "decompress"))
 		return do_decompress(argc, argv);
 		
-	else if (!strcmp(argv[1], "rael")) {
+	else if (!strcmp(argv[1], "show")) {
 		File file = File(argv[2], "r");
 		//file.read_bit(), file.read_bit();
 		while(! file.terminated) {
