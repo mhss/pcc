@@ -138,9 +138,6 @@ int do_index(int argc, char **argv) {
 		return 1;
 	}
 	
-	//TODO Deveria alterar o valor de MAXLEN ao invés de fazer isso, né @Mario ?
-	fileSize = std::min(fileSize, 25000000);
-	
 	// No one character was seen ... until now!
 	memset(character, false, sizeof(character));
 	
@@ -288,9 +285,9 @@ int do_search(int argc, char **argv) {
 		do_search(pattern);
 	
 	//mostra os resultados
-	printf("Total de linhas com ocorrências: %d\n", (int) occ.size());
-	
-	if (!count_only) {
+	if (count_only) 
+		printf("%d\n", (int) occ.size());
+	else {
 		for(std::set<int>::iterator it = occ.begin(); it != occ.end(); it++) {
 			int i = *it;
 			//acha as posições de início e fim da linha
