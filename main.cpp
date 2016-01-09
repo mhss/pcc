@@ -33,6 +33,7 @@
 #include "LZ77.h"
 #include "LZ78.h"
 #include "suffix_tree.h"
+#include "suffix_array_manber.h"
 #include "serial.h"
 
 using namespace std;
@@ -458,7 +459,32 @@ int main(int argc, char **argv) {
 	else if (!strcmp(argv[1], "decompress"))
 		return do_decompress(argc, argv);
 		
-	else if (!strcmp(argv[1], "show")) {
+	else if (!strcmp(argv[1], "rael")) {
+		//TODO
+		char tests[][2][100] = {
+			{"abcd", "abacdaba"},
+			{"abcd", "abacadaba"},
+			{"abc", "abacaba"},
+			{"abn", "banana"},
+			{"imps", "mississippi"},
+			{"aimor", "mario"},
+			{"aeilr", "israelel"},
+		};
+		
+		for(int i = 0; i < 7; ++i) {
+			Alphabet alpha = Alphabet(true);
+			for(int j = 0; tests[i][0][j]; ++j)
+				alpha.push(tests[i][0][j]);
+
+			puts(tests[i][1]);
+			Manber man = Manber(tests[i][1], strlen(tests[i][1]), alpha);
+			puts(".\n");
+			
+			alpha.clear();
+			man.clear();
+		}
+		
+	} else if (!strcmp(argv[1], "show")) {
 		File file = File(argv[2], "r");
 		//file.read_bit(), file.read_bit();
 		while(! file.terminated) {

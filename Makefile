@@ -1,12 +1,12 @@
 # http://mrbook.org/blog/tutorials/make/
 
 CC=g++
-CFLAGS= -Wall -Wshadow -O3
+CFLAGS= -g -Wall -Wshadow -O3
 
 all: main
 
-main: main.o file_manager.o stream.o coding_integers.o alphabet_index.o LZ77.o LZ78.o suffix_tree.o serial.o
-	$(CC) main.o file_manager.o stream.o coding_integers.o alphabet_index.o LZ77.o LZ78.o suffix_tree.o serial.o -o data/ipmt
+main: main.o file_manager.o stream.o coding_integers.o alphabet_index.o LZ77.o LZ78.o suffix_tree.o serial.o suffix_array_manber.o
+	$(CC) main.o file_manager.o stream.o coding_integers.o alphabet_index.o LZ77.o LZ78.o suffix_tree.o serial.o suffix_array_manber.o -o data/ipmt
 
 # Files
 
@@ -36,6 +36,9 @@ suffix_tree.o: suffix_tree.cpp suffix_tree.h
 
 serial.o: serial.cpp serial.h file_manager.cpp suffix_tree.cpp
 	$(CC) -c $(CFLAGS) serial.cpp
+
+suffix_array_manber.o: suffix_array_manber.cpp suffix_array_manber.h alphabet_index.cpp
+	$(CC) -c $(CFLAGS) suffix_array_manber.cpp
 
 
 clean:
