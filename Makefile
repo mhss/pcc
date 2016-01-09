@@ -34,10 +34,10 @@ LZ78.o: LZ78.cpp LZ78.h alphabet_index.h file_manager.cpp stream.cpp serial.cpp
 suffix_tree.o: suffix_tree.cpp suffix_tree.h
 	$(CC) -c $(CFLAGS) suffix_tree.cpp
 
-serial.o: serial.cpp serial.h file_manager.cpp suffix_tree.cpp
+serial.o: serial.cpp serial.h file_manager.cpp alphabet_index.cpp suffix_tree.cpp suffix_array_manber.cpp
 	$(CC) -c $(CFLAGS) serial.cpp
 
-suffix_array_manber.o: suffix_array_manber.cpp suffix_array_manber.h alphabet_index.cpp
+suffix_array_manber.o: suffix_array_manber.cpp suffix_array_manber.h alphabet_index.cpp suffix_tree.cpp
 	$(CC) -c $(CFLAGS) suffix_array_manber.cpp
 
 

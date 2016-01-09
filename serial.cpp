@@ -39,6 +39,10 @@ void serialize_st(File &file, Alphabet &alpha) {
 		serialize_node(file, nodes+i, alpha);
 }
 
+void serialize_sa(File &file, Manber *manber) {
+	for(int i = 0; i < manber->n; ++i)
+		serialize_int(file, manber->sa[i]);
+}
 
 //--------------------desserialização--------------------
 
@@ -93,4 +97,10 @@ void deserialize_st(File &file, Alphabet &alpha) {
 	for(int i = 0; i < node_count; i++) 
 		nodes[i] = deserialize_node(file, alpha);
 }
+
+void deserialize_sa(File &file, Manber *manber) {
+	for(int i = 0; i < manber->n; ++i)
+		manber->sa[i] = deserialize_int(file);
+}
+
 

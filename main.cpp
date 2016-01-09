@@ -44,8 +44,13 @@ char *index_name;
 // Opções
 bool multiple_patterns = false;
 bool count_only = false;
-bool alphabetStatic = true;
+
 bool isLZ77 = false;
+bool alphabetStatic = true;
+bool isTree = true;
+
+// helper
+Manber *manber;
 
 //concatena ext no nome do arquivo
 //se possível, substitui a extensão dele
@@ -73,23 +78,28 @@ void load_compress_name(char *original) {
 
 void readOptions(int argc, char **argv, int params = 1) {
 	for(int i = 2; i < (argc - params); i++) {
-		if (!strcmp(argv[i], "-p") ||
-			!strcmp(argv[i], "--pattern")) 
+		if (!strcmp(argv[i], "-p") || !strcmp(argv[i], "--pattern"))
 			multiple_patterns = true;
 		
-		else if (!strcmp(argv[i], "-c") ||
-				!strcmp(argv[i], "--count")) 
+		else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--count")) 
 			count_only = true;
 
-		else if (!strcmp(argv[i], "-7") ||
-			!strcmp(argv[i], "--LZ77")) 
+		else if (!strcmp(argv[i], "-7") || !strcmp(argv[i], "--LZ77")) 
 			isLZ77 = true;
-			
-		else if (!strcmp(argv[i], "-8") ||
-				!strcmp(argv[i], "--LZ78")) 
+		else if (!strcmp(argv[i], "-8") || !strcmp(argv[i], "--LZ78")) 
 			isLZ77 = false;
-		else {
 		
+		else if (!strcmp(argv[i], "-s") || !strcmp(argv[i], "--static"))
+			alphabetStatic = true;
+		else if (!strcmp(argv[i], "-d") || !strcmp(argv[i], "--dynamic"))
+			alphabetStatic = false;
+		
+		else if (!strcmp(argv[i], "-t") || !strcmp(argv[i], "--tree"))
+			isTree = true;
+		else if (!strcmp(argv[i], "-a") || !strcmp(argv[i], "--array"))
+			isTree = false;
+		
+		else {
 			puts("Opção não reconhecida");
 			throw 1;
 		}
@@ -157,7 +167,6 @@ int do_index(int argc, char **argv) {
 	
 	file.close();
 	
-	
 	// Building alphabet
 	Alphabet alpha = Alphabet(alphabetStatic);
 	for(int i = 0; i < CHARACTER_SIZE; ++i)
@@ -167,9 +176,6 @@ int do_index(int argc, char **argv) {
 	// Adding the null-character
 	alpha.push('\0');
 	
-	// Building the suffix tree
-	build_suffix_tree(fileSize);
-	
 	// Creating filename to result file
 	load_index_name(argv[argc-1]);
 	
@@ -178,38 +184,56 @@ int do_index(int argc, char **argv) {
 		return 1;
 	
 	// Header
-	file.write_bit(alphabetStatic); // Static alphabet
-	file.write_bit(isLZ77); // LZ 77
+	file.write_bit(alphabetStatic); // Static alphabet ?
+	file.write_bit(isLZ77); // LZ 77 ?
+	file.write_bit(isTree); // Suffix Tree ?
 	
 	// Alphabet
 	alpha.writeTo(file);
-	
-	// Suffix Tree
-	serialize_st(file, alpha);
-	clear_st();
 	
 	// Text
 	serialize_int(file, fileSize); // Tamanho do texto
 	serialize_int(file, lines); // número de linhas do texto
 	
-	// Codificando texto original
+	// Encoding text
 	Stream stream = Stream(str);
 	encoding(stream, alpha, file);
 	
+	// Suffix Index
+	if(isTree) {
+		// Building a suffix tree
+		build_suffix_tree(fileSize);
+		serialize_st(file, alpha);
+		clear_st();
+	} else {
+		// Build a suffix array
+		manber = new Manber(fileSize, alpha.size, str, true);
+		manber->build_suffix_array(alpha);
+		serialize_sa(file, manber);
+		manber->clear();
+		free(manber);
+	}
+	
+	// Closing file and freeing resources
 	file.close();
 	free(index_name);
+	free(str);
 	
 	return 0;
 }
 
 void do_search(char *pattern) {
-	//acha o nó mais baixo na árvore de sufixo
-	//que tenha o padrão como prefixo do rótulo
-	int h;
-	Node v = find_node(pattern, h);
+	if(isTree) {
+		//acha o nó mais baixo na árvore de sufixo
+		//que tenha o padrão como prefixo do rótulo
+		int h;
+		Node v = find_node(pattern, h);
 	
-	if (v != NULL)
-		mark_occurrences(v, h);
+		if (v != NULL)
+			mark_occurrences(v, h);
+	} else {
+		manber->do_search(pattern);
+	}
 }
 
 int do_search(int argc, char **argv) {
@@ -229,26 +253,32 @@ int do_search(int argc, char **argv) {
 	// Headers
 	alphabetStatic = file.read_bit();
 	isLZ77 = file.read_bit();
+	isTree = file.read_bit();
 	
 	// Decoding alphabet
 	Alphabet alpha = Alphabet(alphabetStatic);
 	alpha.decoding(file);
 	
-	// Building the suffix tree
-	deserialize_st(file, alpha);
-	
 	// Text
-	s_len = deserialize_int(file); // Tamanho do texto
+	s_len = deserialize_int(file); // Length of text
+	lines = deserialize_int(file); // número de linhas do texto
 	str = (char*) malloc((s_len + 1) * sizeof(char));
 	str[s_len] = '\0';
-	
-	lines = deserialize_int(file); // número de linhas do texto
-	
-	// Decodificando o texto original
+		
+	// Decoding original text
 	Stream stream = Stream(str);
 	decoding(file, alpha, stream, s_len);
 	stream.close();
 	//printf("'%s'.", str);
+	
+	// Suffix Index
+	if(isTree) {
+		// Building the suffix tree
+		deserialize_st(file, alpha);
+	} else {
+		manber = new Manber(s_len, alpha.size, str, false);
+		deserialize_sa(file, manber);
+	}
 	
 	file.close();
 	
@@ -286,7 +316,7 @@ int do_search(int argc, char **argv) {
 		do_search(pattern);
 	
 	//mostra os resultados
-	if (count_only) 
+	if (count_only)
 		printf("%d\n", (int) occ.size());
 	else {
 		for(std::set<int>::iterator it = occ.begin(); it != occ.end(); it++) {
@@ -304,9 +334,12 @@ int do_search(int argc, char **argv) {
 		}
 	}
 	
+	// Freeing resources
+	free(str);
+	occ.clear();
+	
 	return 0;
 }
-
 
 // Comprime o arquivo texto
 int do_compress(int argc, char **argv) {
@@ -429,16 +462,23 @@ int main(int argc, char **argv) {
 	if (!strcmp(argv[1], "-h") ||
 		!strcmp(argv[1], "--help")) {
 		puts("Indexar arquivo: ./ipmt index [OPTION] FILE");
-		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77");
-		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78 (opção padrão)");
+		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77.");
+		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78.");
+		puts("-s --static: utiliza alfabeto estático.");
+		puts("-d --dynamic: utiliza 'move-to-front transform' no texto e nos caracteres dos índices.");
+		puts("              Obs.: O algoritmo suffix array utilizará alfabeto estático.");
+		puts("-a --array: cria um suffix array (Manber & Myers) para utilizar como índice.");
+		puts("-t --tree: cria uma suffix tree (Ukkonen) para utilizar como índice.");
+		puts("   Opções padrão: Alfabeto estático; LZ78; Suffix Tree.");
 		puts("");
 		puts("Buscar em índice: ./ipmt search [OPTION] FILE PATTERN");
-		puts("-p, --pattern: busca todos os padrões do arquivo PATTERN, um por cada linha");
-		puts("-c, --count: mostra a soma das quantidades de ocorrências de cada padrão");
+		puts("-p, --pattern: busca todos os padrões do arquivo PATTERN, um por cada linha.");
+		puts("-c, --count: mostra a quantidade de linhas do arquivo que apresentam ocorrências dos padrões.");
 		puts("");
 		puts("Comprimir arquivo: ./ipmt compress [OPTION] FILE");
-		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77");
-		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78 (opção padrão)");
+		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77.");
+		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78.");
+		puts("   Opções padrão: LZ78.");
 		puts("");
 		puts("Descomprimir arquivo: ./ipmt decompress FILE");
 		puts("");
@@ -462,13 +502,33 @@ int main(int argc, char **argv) {
 	else if (!strcmp(argv[1], "rael")) {
 		//TODO
 		char tests[][2][100] = {
+			{"abn", "banana"},
 			{"abcd", "abacdaba"},
 			{"abcd", "abacadaba"},
 			{"abc", "abacaba"},
-			{"abn", "banana"},
 			{"imps", "mississippi"},
 			{"aimor", "mario"},
 			{"aeilr", "israelel"},
+		};
+		
+		int qtdToSearch[] = {
+			10,
+			8,
+			9,
+			9,
+			10,
+			12,
+			6,
+		};
+		
+		char toSearch[][20][100] = {
+			{"ban", "ana", "nanica", "a", "n", "c", "na", "naa", "nan", "nap"},
+			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a"},
+			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a", "aa"},
+			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a", "aa"},
+			{"mis", "ssiss", "iss", "ippi", "pp", "pi", "q", "l", "miss", "ssi"},
+			{"mario", "mar", "rio", "ar", "ai", "mari", "maria", "a", "i", "m", "o", "r"},
+			{"rael", "el", "elzinho", "el", "isra", "raea"},
 		};
 		
 		for(int i = 0; i < 7; ++i) {
@@ -477,11 +537,17 @@ int main(int argc, char **argv) {
 				alpha.push(tests[i][0][j]);
 
 			puts(tests[i][1]);
-			Manber man = Manber(tests[i][1], strlen(tests[i][1]), alpha);
+			Manber man = Manber(strlen(tests[i][1]), alpha.size, tests[i][1], true);
+			man.build_suffix_array(alpha);
 			puts(".\n");
+			
+			for(int j = 0; j < qtdToSearch[i]; ++j)
+				man.search(toSearch[i][j]);
+			puts("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ \n\n");
 			
 			alpha.clear();
 			man.clear();
+//			break;
 		}
 		
 	} else if (!strcmp(argv[1], "show")) {

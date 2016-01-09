@@ -15,7 +15,11 @@
 #include <algorithm>
 #include <string>
 
+struct Alphabet;
+
 #include "file_manager.h"
+// Incluir serial.h após criar a struct Alphabet
+#include "serial.h"
 
 #define ALPHA_LENGTH (1 << 9)
 struct Alphabet {
@@ -45,9 +49,6 @@ struct Alphabet {
 	// Limpando estrutura
 	void clear();
 };
-
-// Incluir serial.h após criar a struct Alphabet
-#include "serial.h"
 
 void testAlphabet();
 
