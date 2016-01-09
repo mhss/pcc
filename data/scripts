@@ -1,0 +1,21 @@
+pra todos esses scripts funcionarem, o ipmt deve estar na mesma pasta
+se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no terminal
+
+./test txt patt
+	indexa txt
+	pra cada palavra de patt
+		faz a query dela em txt com ipmt e com grep
+		imprime as cujo resultado for diferente
+	deleta todos os índices da pasta
+
+./measure_indexing txt
+	indexa txt 10 vezes e mostra a média dos tempos
+	se quiser mudar a qtd de vezes, altera a variável CNT logo no começo
+
+./measure_query txt patt
+	indexa txt
+	pra cada palavra de patt, faz a query dela 3 vezes em txt e guarda o tempo
+	mostra a média dos tempos das queries de todas as palavras
+	deleta todos os índices da pasta
+	se quiser mudar a qtd de vezes que cada query é feita, altera a variável CNT logo no começo
+

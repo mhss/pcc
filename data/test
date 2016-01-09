@@ -1,0 +1,18 @@
+#!/bin/bash
+TXT=$1
+PAT=$2
+
+./ipmt index $TXT
+
+for p in $(cat $PAT); do
+	out1=$(grep -c $p $TXT)
+	out2=$(./ipmt search -c $TXT $p)
+	
+	if [ "$out1" != "$out2" ]; then
+		echo "query $p deu errado"
+		echo "grep: $out1"
+		echo "ipmt: $out2"
+	fi
+done
+
+rm *.idx
