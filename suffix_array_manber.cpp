@@ -122,8 +122,8 @@ inline int Manber::lcp(const char *a, const char *b, int start) {
 	/*/ @Debug
 	for(i = 0; i < start; ++i)
 		assert(a[i] == b[i]);
-	//*/
 	start = 0;
+	//*/
 	for(i = start; a[i] && b[i] && a[i] == b[i]; ++i);
 	return i;
 }
