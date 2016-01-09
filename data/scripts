@@ -19,3 +19,8 @@ se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no ter
 	deleta todos os índices da pasta
 	se quiser mudar a qtd de vezes que cada query é feita, altera a variável CNT logo no começo
 
+pra adicionar parâmetros na execução do ipmt, mexe nas linhas:
+test: 5 e 9
+measure_indexing: 7
+measure_query: 6 e 11
+
