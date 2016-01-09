@@ -1,0 +1,34 @@
+Segundo projeto de PCC
+
+Grupo:
+Mário Henrique Santos da Silva (mhss)
+	Árvore de sufixo
+	Maior parte do front-end
+	Scripts de teste
+Israel Batista Freitas da Silva (ibfs)
+	Array de sufixo
+	Algoritmos de compressão
+	Testes
+
+Funcionamento
+No modo de indexação, o conteúdo do arquivo é lido, e o conjunto de caracteres dele é determinado. Depois é construída a árvore de sufixo ou array de sufixo, dependendo da escolha do usuário. Então, em um arquivo são escritos o alfabeto e o índice do texto. O índice é representado por uma sequência de inteiros e caracteres, cada um escrito com fibonacci encoding. Por último, o texto é comprimido e escrito no arquivo. O algoritmo de compressão pode ser o LZ77 ou LZ78.
+No modo de consulta, o arquivo de índice é aberto e são lidos o alfabeto do texto, o índice e o próprio texto, este último sendo descomprimido. O arquivo de índice informa o algoritmo de compressão usado e se o índice é uma árvore ou array de sufixo. Depois o programa percorre o texto pra determinar as posições de fim de cada linha. Então, para cada padrão a ser buscado, o programa encontra suas ocorrências no índice, determina as linhas às quais cada uma pertence e armazena elas num conjunto. Finalmente, cada linha com ocorrência de pelo menos um padrão é impressa, ou só a quantidade delas.
+
+Árvore de sufixo
+O algoritmo usado para a construção foi o mostrado em aula, Ukkonen de 1995, com algumas alterações.
+Para buscar um padrão, o programa procura o nó explícito mais baixo na árvore cujo rótulo tenha como prefixo o padrão buscado. Se ele existir, para cada folha da subárvore dele, o programa pega a altura e com ela determina a posição da ocorrência correspondente.
+
+Array de sufixo
+
+LZ77
+
+LZ78
+
+Testes
+
+RAEL MUDA AQUI
+Os testes da ferramenta foram realizados num computador com processador Intel Core i3 de 2.53GHz com 3.7 GB de memória RAM, com um SO Ubuntu 13.10 de 32 bits.
+Medimos o tempo médio gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados. Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Procuramos variar o tipo e tamanho dos textos e padrões buscados, algoritmos de compressão e tipos de índices utilizados. O desempenho das consultas do projeto foi comparado com o do programa grep ...
+
+
+

@@ -1,0 +1,23 @@
+pra cada arquivo de texto
+	pra cada algoritmo de índice
+		pra cada algoritmo de compressão
+			medir tempo pra indexação
+			medir tamanho do arquivo gerado em comparação com o original
+			medir tempo pra consulta com um conjunto vazio de padrões (descompressão)
+			(memória gasta?)
+		
+		pra cada conjunto de padrões
+			medir tempo pra consulta (- tempo pra descompressão)
+			(memória gasta?)
+
+arquivos-texto e seus padrões
+	source
+		palavras comuns
+	dna
+		tamanho e variedade da cadeia
+	xml
+		palavras comuns
+	english
+		palavras comuns
+		frases
+
