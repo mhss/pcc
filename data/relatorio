@@ -10,13 +10,15 @@ Israel Batista Freitas da Silva (ibfs)
 	Algoritmos de compressão
 	Testes
 
-Funcionamento
+Implementação
 
-No modo de indexação, o conteúdo do arquivo é lido, e o conjunto de caracteres dele é determinado. Depois é construída a árvore de sufixo ou array de sufixo, dependendo da escolha do usuário. Então, em um arquivo são escritos o alfabeto e o índice do texto. O índice é representado por uma sequência de inteiros e caracteres, cada um escrito com fibonacci encoding. Por último, o texto é comprimido e escrito no arquivo. O algoritmo de compressão pode ser o LZ77 ou LZ78.
+No modo de indexação, o conteúdo do arquivo é lido, e o conjunto de caracteres dele é determinado. Depois é construída a árvore de sufixo ou array de sufixo, dependendo da escolha do usuário. Então, em um arquivo são escritos o alfabeto e o índice do texto. O índice é representado por uma sequência de inteiros e caracteres, cada um escrito com fibonacci encoding. Então são escritos o tamanho e número de linhas do texto. Por último, o próprio texto é comprimido e escrito no arquivo. O algoritmo de compressão pode ser o LZ77 ou LZ78.
 No modo de consulta, o arquivo de índice é aberto e são lidos o alfabeto do texto, o índice e o próprio texto, este último sendo descomprimido. O arquivo de índice informa o algoritmo de compressão usado e se o índice é uma árvore ou array de sufixo. Depois o programa percorre o texto pra determinar as posições de fim de cada linha. Então, para cada padrão a ser buscado, o programa encontra suas ocorrências no índice, determina as linhas às quais cada uma pertence e armazena elas num conjunto. Finalmente, cada linha com ocorrência de pelo menos um padrão é impressa, ou só a quantidade delas.
 
 Árvore de sufixo
-O algoritmo usado para a construção foi o mostrado em aula, Ukkonen de 1995, com algumas alterações.
+O algoritmo usado para a construção foi o mostrado em aula, Ukkonen de 1995, com algumas alterações. Cada nó explícito da árvore é representado por um struct com um map que guarda as transições que saem daquele nó, indexadas pelo primeiro caractere da aresta. Os nós da árvore são guardados num array. Os suffix links são armazenados fora do struct, em um array alocado dinamicamente, pois são necessários somente durante a construção da árvore.
+Os nós implícitos da árvore são representados por um struct com um nó explícito e um intervalo da string. Esse mesmo struct, por conveniência, representa as transições que saem de cada nó.
+Para ser escrita num arquivo, a árvore é convertida numa sequência de inteiros e caracteres. O primeiro é a quantidade total de nós, e depois dele vêm, em sequência, as serializações de cada nó. A serialização de um nó consiste da quantidade de transações que saem dele, seguida pela sequência dessas transações. Cada transação é representada pelo primeiro caractere da aresta, pelo qual a transação é indexada no map do nó, seguido pelo índice do nó alvo e o intervalo da string que contém o rótulo da aresta. Cada valor é codificado no arquivo utilizando fibonacci encoding.
 Para buscar um padrão, o programa procura o nó explícito mais baixo na árvore cujo rótulo tenha como prefixo o padrão buscado. Se ele existir, para cada folha da subárvore dele, o programa pega a altura e com ela determina a posição da ocorrência correspondente.
 
 Array de sufixo
@@ -30,6 +32,7 @@ Detalhes
 Nos argumentos pra consulta, botamos o padrão depois do texto, pra ficar mais fácil fazer testes.
 O programa só aceita textos com caracteres ASCII com valor de 0 a 255.
 O consumo de memória durante a indexação tende a ser muito grande, chegando a 3GB para arquivos de mais de 25MB.
+O programa só aceita padrões de no máximo 1000 caracteres.
 
 Testes
 

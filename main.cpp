@@ -1,28 +1,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <climits>
-#include <cctype>
-#include <cmath>
-#include <cassert>
-#include <ctime>
 
-#include <iostream>
-#include <iomanip>
 #include <algorithm>
-#include <string>
-#include <vector>
-#include <deque>
-#include <list>
-#include <queue>
-#include <stack>
 #include <map>
 #include <set>
-#include <bitset>
-//#include <complex>
-#include <limits>
-#include <functional>
-#include <numeric>
 #include <fcntl.h>
 #include <sys/stat.h>
 
@@ -38,6 +20,7 @@
 
 using namespace std;
 
+const int MAXLEN = 110000000;
 const int MAX_PATT_LEN = 1000;
 char *index_name;
 
@@ -220,6 +203,16 @@ int do_index(int argc, char **argv) {
 	free(str);
 	
 	return 0;
+}
+
+void count_lines() {
+	line_end = (int*) malloc(lines * sizeof(int));
+	int i = 0;
+	
+	for(int j = 0; j < s_len; j++)
+		if (str[j] == '\n')
+			line_end[i++] = j;
+	line_end[i] = s_len;
 }
 
 void do_search(char *pattern) {

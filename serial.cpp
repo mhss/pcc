@@ -89,7 +89,7 @@ TNode deserialize_node(File &file, Alphabet &alpha) {
 
 void deserialize_st(File &file, Alphabet &alpha) {
 	int nc = deserialize_int(file);
-	init(nc);
+	init_tree(nc);
 	empty = nodes+0;
 	root = nodes+1;
 	node_count = nc;

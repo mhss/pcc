@@ -67,45 +67,18 @@ void TNode::remove(int i) {
 }
 
 void TNode::add(Node v, int l, int r) {
-	try {
-		if (this->next == NULL)
-			this->next = new std::map<char, INode>();
-	} catch (std::bad_alloc &ba) {
-		puts("BA0");
-		printf("%d\n", node_count);
-		int w;
-		scanf("%d", &w);
-		throw ba;
-	}
+	if (this->next == NULL)
+		this->next = new std::map<char, INode>();
 	
 	this->remove(l);
-	
-	INode in;
-	try {
-		in = new TINode(v, l, r);
-	} catch (std::bad_alloc &ba) {
-		puts("BA1");
-		printf("%d\n", node_count);
-		int w;
-		scanf("%d", &w);
-		throw ba;
-	}
-		
-	try {
-		(*next)[str[l]] = in;
-	} catch (std::bad_alloc &ba) {
-		puts("BA2");
-		printf("%d\n", node_count);
-		int w;
-		scanf("%d", &w);
-		throw ba;
-	}
+	(*next)[str[l]] = new TINode(v, l, r);
 }
 
 bool TNode::has_transitions() {
 	return (this->next != NULL) &&
 			!(this->next->empty());
 }
+
 
 Node create() {
 	Node ret = nodes + (node_count++);
@@ -114,7 +87,7 @@ Node create() {
 	return ret;
 }
 
-void init(int nc) {
+void init_tree(int nc) {
 	nodes = (TNode*) malloc(nc*sizeof(TNode));
 	node_count = 0;
 }
@@ -192,7 +165,7 @@ Node test_n_split(INode active, int i, bool &is_term) {
 
 void build_suffix_tree(int textSize) {
 	int maxnodes = textSize*2 + 3;
-	init(maxnodes);
+	init_tree(maxnodes);
 	suff_links = (Node*) malloc(maxnodes*sizeof(Node));
 	
 	empty = create();
@@ -235,33 +208,7 @@ void build_suffix_tree(int textSize) {
 	free(active);
 }
 
-void count_lines() {
-	line_end = (int*) malloc(lines * sizeof(int));
-	int i = 0;
-	
-	for(int j = 0; j < s_len; j++)
-		if (str[j] == '\n')
-			line_end[i++] = j;
-	line_end[i] = s_len;
-}
-
 //--------------------utilização--------------------
-
-//faz uma dfs na árvore
-int count_distinct(Node v) {
-	if (!v->has_transitions())
-		return 0;
-	
-	int count = 0;
-
-	for(std::map<char, INode>::iterator it = v->next->begin(); it != v->next->end(); it++) {
-		INode next = it->second;
-		int len = next->r - next->l;
-		count += len + count_distinct(next->node);
-	}
-	
-	return count;
-}
 
 Node find_node(char *t, int &h) {
 	Node v = root;

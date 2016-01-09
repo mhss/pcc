@@ -7,8 +7,6 @@
 #include <map>
 #include <set>
 
-const int MAXLEN = 60000000;
-
 //texto completo
 extern char *str;
 //número de nós atual e tamanho da string
@@ -68,18 +66,16 @@ struct TNode {
 //cria um novo nó
 Node create();
 //inicializa a árvore
-void init(int nc);
+void init_tree(int nc);
 //destrói a árvore pra liberar memória
 void clear_st();
 
 
-Node test_n_split(INode active, int i, bool &is_term);
 void canonise(INode active);
+Node test_n_split(INode active, int i, bool &is_term);
 void build_suffix_tree(int textSize);
-void count_lines();
 
 
-int count_distinct(Node v);
 //encontra o nó mais baixo na árvore que venha depois do texto t
 //ou NULL se não houver um
 //e põe a altura dele em h
