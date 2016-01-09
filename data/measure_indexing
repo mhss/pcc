@@ -1,0 +1,14 @@
+#!/bin/bash
+TXT=$1
+CNT=10
+
+OUTPUT=""
+while [ $CNT -gt 0 ]; do
+	ADD=$(/usr/bin/time -f'%S %U ' ./ipmt index $TXT 2>&1)
+	OUTPUT+="$ADD"
+	
+	let CNT=CNT-1
+done
+
+echo "$OUTPUT" | ./somador
+rm *.idx

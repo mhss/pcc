@@ -1,0 +1,22 @@
+#!/bin/bash
+TXT=$1
+PAT=$2
+CNT=3
+
+./ipmt index $TXT
+
+OUTPUT=""
+while [ $CNT -gt 0 ]; do
+	for p in $(cat $PAT); do
+		/usr/bin/time -f'%S %U ' ./ipmt search -c $TXT $p 1> out1 2> out2
+		ADD=$(cat out2)
+		OUTPUT+="$ADD"
+	done
+	
+	let CNT=CNT-1
+done
+
+echo "$OUTPUT" | ./somador
+rm out1
+rm out2
+rm *.idx
