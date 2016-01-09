@@ -11,6 +11,7 @@ Israel Batista Freitas da Silva (ibfs)
 	Testes
 
 Funcionamento
+
 No modo de indexação, o conteúdo do arquivo é lido, e o conjunto de caracteres dele é determinado. Depois é construída a árvore de sufixo ou array de sufixo, dependendo da escolha do usuário. Então, em um arquivo são escritos o alfabeto e o índice do texto. O índice é representado por uma sequência de inteiros e caracteres, cada um escrito com fibonacci encoding. Por último, o texto é comprimido e escrito no arquivo. O algoritmo de compressão pode ser o LZ77 ou LZ78.
 No modo de consulta, o arquivo de índice é aberto e são lidos o alfabeto do texto, o índice e o próprio texto, este último sendo descomprimido. O arquivo de índice informa o algoritmo de compressão usado e se o índice é uma árvore ou array de sufixo. Depois o programa percorre o texto pra determinar as posições de fim de cada linha. Então, para cada padrão a ser buscado, o programa encontra suas ocorrências no índice, determina as linhas às quais cada uma pertence e armazena elas num conjunto. Finalmente, cada linha com ocorrência de pelo menos um padrão é impressa, ou só a quantidade delas.
 
@@ -23,6 +24,12 @@ Array de sufixo
 LZ77
 
 LZ78
+
+Detalhes
+
+Nos argumentos pra consulta, botamos o padrão depois do texto, pra ficar mais fácil fazer testes.
+O programa só aceita textos com caracteres ASCII com valor de 0 a 255.
+O consumo de memória durante a indexação tende a ser muito grande, chegando a 3GB para arquivos de mais de 25MB.
 
 Testes
 
