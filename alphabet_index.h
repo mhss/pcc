@@ -25,7 +25,7 @@ struct Alphabet {
 	
 	Alphabet(bool dynamic = false);
 	
-	inline bool isStatic();
+	bool isStatic();
 	
 	// Não chamar este método com caractere repetido
 	void push(char c);

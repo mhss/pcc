@@ -11,7 +11,7 @@ Alphabet::Alphabet(bool isStatic) {
 	}
 }
 
-inline bool Alphabet::isStatic() {
+bool Alphabet::isStatic() {
 	return index != NULL;
 }
 
