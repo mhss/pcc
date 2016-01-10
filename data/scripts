@@ -9,8 +9,11 @@ se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no ter
 	deleta todos os índices da pasta
 
 ./measure_indexing txt
-	indexa txt 10 vezes e mostra a média dos tempos
+	indexa txt 3 vezes e mostra a média dos tempos
 	se quiser mudar a qtd de vezes, altera a variável CNT logo no começo
+
+./meas_index_sizes txt
+	roda ./measure_indexing com os primeiros 5, 10, 15, ..., 50 MB de txt
 
 ./measure_query txt patt
 	indexa txt

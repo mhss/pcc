@@ -1,6 +1,6 @@
 #!/bin/bash
 TXT=$1
-CNT=10
+CNT=3
 
 OUTPUT=""
 while [ $CNT -gt 0 ]; do
@@ -10,5 +10,5 @@ while [ $CNT -gt 0 ]; do
 	let CNT=CNT-1
 done
 
+echo "tempo medio:"
 echo "$OUTPUT" | ./somador
-rm *.idx
