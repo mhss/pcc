@@ -173,7 +173,6 @@ inline void LZ77::buildFailFunction() {
 	// Busca em largura
 	for(int j = 0; j < (i - 1); ++j) {
 		int f = fail[j];
-//			printf(" (%d)  f %2d, preview %c\n", j, f, previewTable[j + 1]);
 		while(f != -1 && previewTable[f + 1] != previewTable[j + 1])
 			f = fail[f];
 		
@@ -185,12 +184,6 @@ inline void LZ77::buildFailFunction() {
 	
 	previewTable[i] = '\0';
 	previewTable[0] = '.';
-	dbg {
-		printf("\n%s\n", previewTable);
-		for(int j = 0; j < i; ++j)
-			printf(" fail[%d %c] = %2d\n", j, previewTable[j], fail[j]);
-		puts("");
-	}
 }
 
 void LZ77::encoding(Stream &stream, Alphabet &alpha, File &file) {
@@ -211,13 +204,6 @@ void LZ77::encoding(Stream &stream, Alphabet &alpha, File &file) {
 		if(! stream.hasNext() && ! terminalActive && ! preview.full()) {
 			terminalActive = true;
 			preview.push('\0');
-		}
-		
-		dbg {
-			puts("Start!!");
-			printf("Dictionary: "), showStack(dictionary);
-			printf("Preview:    "), showQueue(preview);
-			puts("");
 		}
 		
 		// Construindo Aho-Corasick para tabela preview'
@@ -273,19 +259,8 @@ void LZ77::encoding(Stream &stream, Alphabet &alpha, File &file) {
 		
 		// Escreve a saída no arquivo
 		serialize_int(file, bestMatch.F);
-		serialize_int(file, bestMatch.S);
+		if(bestMatch.F > 0) serialize_int(file, bestMatch.S);
 		serialize_int(file, alpha.getIndex(character_to_push));
-		
-		dbg {
-			printf("   > (%d, %d) [%2d] {%3d} %c\n", bestMatch.F, bestMatch.S, alpha.getIndex(character_to_push),
-				character_to_push, character_to_push);
-			printf("Dictionary: "), showStack(dictionary);
-			printf("   Preview: "), showQueue(preview);
-
-			printf("Dictionary: (%2d) ", dictionary.getSize()), showStack(dictionary);
-			printf("Preview:         "), showQueue(preview);
-			puts("------------------------------------------------");
-		}
 	}
 }
 
@@ -300,18 +275,8 @@ void LZ77::decoding(File &file, Alphabet &alpha, Stream &stream, int textSize) {
 	while(! file.terminated) {
 		
 		int pos = deserialize_int(file);
-		int cnt = deserialize_int(file);
+		int cnt = (pos > 0) ? deserialize_int(file) : 0;
 		int idx = deserialize_int(file);
-//		printf("  LZ77::decoding(pos = %3d, cnt = %3d, idx = %3d)\n", pos, cnt, idx);
-		/*
-		printf("   > (%d,%2d) [%2d] {%3d} %c\n", pos, cnt, idx, alpha.getChar(idx), alpha.getChar(idx));
-		showStack(dictionary);
-		for(int i = 0; i < LZ77_DICTIONARY_BUFFER_LENGTH; ++i)
-			printf(" %c.", dictionary.array[i]);
-		printf("\n");
-		LzIterator eita = dictionary.getIterator(pos);
-		printf("      eita.pos %d\n", eita.pos);
-		//*/
 		
 		while(cnt--) {
 			LzIterator it = dictionary.getIterator(pos);
@@ -331,8 +296,6 @@ void LZ77::decoding(File &file, Alphabet &alpha, Stream &stream, int textSize) {
 		dictionary.push(c);
 		++z;
 	}
-	
-//	printf("          s %s\n", s);
 }
 
 #undef ROOT

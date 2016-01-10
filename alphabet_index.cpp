@@ -3,6 +3,7 @@
 const int OFFSET = 128;
 
 Alphabet::Alphabet(bool isStatic) {
+	index = NULL;
 	lista = (char*) malloc(ALPHA_LENGTH * sizeof(char));
 	size = 0;
 	

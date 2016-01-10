@@ -1,7 +1,7 @@
 # http://mrbook.org/blog/tutorials/make/
 
 CC=g++
-CFLAGS= -g -Wall -Wshadow -O3
+CFLAGS= -Wall -Wshadow -O3
 
 all: main
 

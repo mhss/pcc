@@ -72,10 +72,12 @@ void readOptions(int argc, char **argv, int params = 1) {
 		else if (!strcmp(argv[i], "-8") || !strcmp(argv[i], "--LZ78")) 
 			isLZ77 = false;
 		
+		/*
 		else if (!strcmp(argv[i], "-s") || !strcmp(argv[i], "--static"))
 			alphabetStatic = true;
 		else if (!strcmp(argv[i], "-d") || !strcmp(argv[i], "--dynamic"))
 			alphabetStatic = false;
+		//*/
 		
 		else if (!strcmp(argv[i], "-t") || !strcmp(argv[i], "--tree"))
 			isTree = true;
@@ -438,8 +440,8 @@ int do_decompress(int argc, char **argv) {
 	Stream stream = Stream(target);
 	decoding(file, alpha, stream, s_len);
 	
+	stream.close();
 	file.close();
-	target.close();
 	free(index_name);
 	
 	return 0;
@@ -457,9 +459,11 @@ int main(int argc, char **argv) {
 		puts("Indexar arquivo: ./ipmt index [OPTION] FILE");
 		puts("-7, --LZ77: comprime o arquivo de texto utilizando o algoritmo LZ77.");
 		puts("-8, --LZ78: comprime o arquivo de texto utilizando o algoritmo LZ78.");
+		/*
 		puts("-s --static: utiliza alfabeto estático.");
 		puts("-d --dynamic: utiliza 'move-to-front transform' no texto e nos caracteres dos índices.");
 		puts("              Obs.: O algoritmo suffix array utilizará alfabeto estático.");
+		//*/
 		puts("-a --array: cria um suffix array (Manber & Myers) para utilizar como índice.");
 		puts("-t --tree: cria uma suffix tree (Ukkonen) para utilizar como índice.");
 		puts("   Opções padrão: Alfabeto estático; LZ78; Suffix Tree.");
@@ -493,55 +497,7 @@ int main(int argc, char **argv) {
 		return do_decompress(argc, argv);
 		
 	else if (!strcmp(argv[1], "rael")) {
-		//TODO
-		char tests[][2][100] = {
-			{"abn", "banana"},
-			{"abcd", "abacdaba"},
-			{"abcd", "abacadaba"},
-			{"abc", "abacaba"},
-			{"imps", "mississippi"},
-			{"aimor", "mario"},
-			{"aeilr", "israelel"},
-		};
-		
-		int qtdToSearch[] = {
-			10,
-			8,
-			9,
-			9,
-			10,
-			12,
-			6,
-		};
-		
-		char toSearch[][20][100] = {
-			{"ban", "ana", "nanica", "a", "n", "c", "na", "naa", "nan", "nap"},
-			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a"},
-			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a", "aa"},
-			{"abaca", "e", "dd", "da", "daa", "bac","bab", "a", "aa"},
-			{"mis", "ssiss", "iss", "ippi", "pp", "pi", "q", "l", "miss", "ssi"},
-			{"mario", "mar", "rio", "ar", "ai", "mari", "maria", "a", "i", "m", "o", "r"},
-			{"rael", "el", "elzinho", "el", "isra", "raea"},
-		};
-		
-		for(int i = 0; i < 7; ++i) {
-			Alphabet alpha = Alphabet(true);
-			for(int j = 0; tests[i][0][j]; ++j)
-				alpha.push(tests[i][0][j]);
-
-			puts(tests[i][1]);
-			Manber man = Manber(strlen(tests[i][1]), alpha.size, tests[i][1], true);
-			man.build_suffix_array(alpha);
-			puts(".\n");
-			
-			for(int j = 0; j < qtdToSearch[i]; ++j)
-				man.search(toSearch[i][j]);
-			puts("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ \n\n");
-			
-			alpha.clear();
-			man.clear();
-//			break;
-		}
+		// Nothing to do here!
 		
 	} else if (!strcmp(argv[1], "show")) {
 		File file = File(argv[2], "r");
