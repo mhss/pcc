@@ -10,5 +10,5 @@ while [ $CNT -gt 0 ]; do
 	let CNT=CNT-1
 done
 
-echo "tempo medio:"
+echo "tempo:"
 echo "$OUTPUT" | ./somador
