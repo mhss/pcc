@@ -3,11 +3,11 @@ TXT=$1
 STR=$2
 SZ=0
 
-while [ $SZ -lt 11 ]; do
+while [ $SZ -lt 12 ]; do
 	./gen $STR $SZ "input"
 	echo "tamanho: $SZ"
 	./measure_query $TXT "input"
 	
 	rm "input"
-	let SZ=SZ+1
+	let SZ=SZ+2
 done
