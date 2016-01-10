@@ -1,0 +1,224 @@
+ibfs@ibfs-virtualBox:~/Desktop/data$ ./meas_index_sizes english.50MB english.idx
+tamanho: 5 MB
+tempo:
+24.210000
+tamanho do indice: 
+106145741
+
+tamanho: 10 MB
+tempo:
+49.690000
+tamanho do indice: 
+231637987
+
+tamanho: 15 MB
+tempo:
+75.990000
+tamanho do indice: 
+355041296
+
+tamanho: 20 MB
+tempo:
+102.420000
+tamanho do indice: 
+491003716
+
+tamanho: 25 MB
+tempo:
+129.080000
+tamanho do indice: 
+620815992
+
+tamanho: 30 MB
+tempo:
+157.760000
+tamanho do indice: 
+737319871
+
+tamanho: 35 MB
+tempo:
+186.540000
+tamanho do indice: 
+858603287
+
+
+=========================================================
+./meas_index_sizes dna.50MB dna.idx
+tamanho: 5 MB
+tempo:
+21.960000
+tamanho do indice: 
+108008118
+
+tamanho: 10 MB
+tempo:
+45.070000
+tamanho do indice: 
+226149970
+
+tamanho: 15 MB
+tempo:
+68.960000
+tamanho do indice: 
+347878776
+
+tamanho: 20 MB
+tempo:
+93.180000
+tamanho do indice: 
+470663447
+
+tamanho: 25 MB
+tempo:
+119.100000
+tamanho do indice: 
+597206517
+
+tamanho: 30 MB
+tempo:
+144.990000
+tamanho do indice: 
+722902754
+
+tamanho: 35 MB
+tempo:
+201.400000
+tamanho do indice: 
+849338137
+
+==============================================================
+ibfs@ibfs-virtualBox:~/Desktop/data$ ./meas_index_sizes sources.50MB sources.idx
+tamanho: 5 MB
+tempo:
+18.270000
+tamanho do indice: 
+107788837
+
+tamanho: 10 MB
+tempo:
+37.620000
+tamanho do indice: 
+226834624
+
+tamanho: 15 MB
+tempo:
+59.640000
+tamanho do indice: 
+347229033
+
+tamanho: 20 MB
+tempo:
+80.390000
+tamanho do indice: 
+469087606
+
+tamanho: 25 MB
+tempo:
+101.650000
+tamanho do indice: 
+595764669
+
+tamanho: 30 MB
+tempo:
+119.970000
+tamanho do indice: 
+719374196
+
+tamanho: 35 MB
+tempo:
+149.680000
+tamanho do indice: 
+842817283
+
+======================================
+
+ ./meas_index_sizes proteins.50MB proteins.idx
+tamanho: 5 MB
+tempo:
+24.600000
+tamanho do indice: 
+103484312
+
+tamanho: 10 MB
+tempo:
+50.380000
+tamanho do indice: 
+229733955
+
+tamanho: 15 MB
+tempo:
+80.660000
+tamanho do indice: 
+353999112
+
+tamanho: 20 MB
+tempo:
+108.170000
+tamanho do indice: 
+475259394
+
+tamanho: 25 MB
+tempo:
+141.550000
+tamanho do indice: 
+599355976
+
+tamanho: 30 MB
+tempo:
+167.810000
+tamanho do indice: 
+709242764
+
+tamanho: 35 MB
+tempo:
+204.140000
+tamanho do indice: 
+817903353
+
+============================================
+
+ibfs@ibfs-virtualBox:~/Desktop/data$ ./meas_index_sizes xmls.50MB xmls.idx
+tamanho: 5 MB
+tempo:
+18.550000
+tamanho do indice: 
+95245799
+
+tamanho: 10 MB
+tempo:
+38.280000
+tamanho do indice: 
+200100552
+
+tamanho: 15 MB
+tempo:
+59.090000
+tamanho do indice: 
+308498854
+
+tamanho: 20 MB
+tempo:
+78.110000
+tamanho do indice: 
+416999777
+
+tamanho: 25 MB
+tempo:
+99.320000
+tamanho do indice: 
+528990260
+
+tamanho: 30 MB
+tempo:
+117.810000
+tamanho do indice: 
+641102313
+
+tamanho: 35 MB
+tempo:
+140.230000
+tamanho do indice: 
+752168944
+
+==================================
+
