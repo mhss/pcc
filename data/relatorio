@@ -33,6 +33,7 @@ Nos argumentos pra consulta, botamos o padrão depois do texto, pra ficar mais f
 O programa só aceita textos com caracteres ASCII com valor de 0 a 255.
 O consumo de memória durante a indexação tende a ser muito grande, chegando a 3GB para arquivos de mais de 25MB.
 O programa só aceita padrões de no máximo 1000 caracteres.
+Não conseguimos executar o programa corretamente com textos maiores que 35MB.
 
 Testes
 

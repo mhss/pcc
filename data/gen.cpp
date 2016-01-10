@@ -19,6 +19,11 @@ int main(int argc, char **argv) {
 	int n = atoi(argv[2]);
 	freopen(argv[3], "w", stdout);
 	
+	if (n == 0) {
+		puts("");
+		return 0;
+	}
+	
 	srand(time(NULL));
 	for(int i = 0; i < 100; i++) {
 		for(int j = 0; j < n; j++) 
