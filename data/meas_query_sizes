@@ -5,13 +5,13 @@ SZ=0
 
 ./ipmt index $TXT
 
-while [ $SZ -lt 60 ]; do
+while [ $SZ -lt 11 ]; do
 	./gen $STR $SZ "input"
 	echo "tamanho: $SZ"
 	./measure_query $TXT "input"
 	
 	rm "input"
-	let SZ=SZ+10
+	let SZ=SZ+1
 done
 
 rm *.idx

@@ -12,22 +12,20 @@ pra cada arquivo de texto
 
 arquivos-texto e seus padrões
 	source
-		gerador a-z
-		break char const define double
-		float for goto if include
-		int long return short static
-		struct typedef unsigned void while
+		gerador qwertyuiopasdfghjklzxcvbnm
+		break char const define double float for goto if include int long return short static struct typedef unsigned void while
+	
 	dna
 		gerador ACGT
+	
 	proteins
 		gerador ABCDEFGHIKLMNPQRSTUVWXYZ
+	
 	english
-		gerador a-z
+		gerador qwertyuiopasdfghjklzxcvbnm
 		palavras comuns
+	
 	xml (se conseguir indexar)
-		gerador a-z
-		article author book com DOCTYPE
-		editor encoding journal key mdate
-		org pages school title url
-		version volume www xml year
+		gerador qwertyuiopasdfghjklzxcvbnm
+		article author book com DOCTYPE editor encoding journal key mdate org pages school title url version volume www xml year
 
