@@ -27,10 +27,8 @@ void serialize_node(File &file, Node node, Alphabet &alpha) {
 	
 	serialize_int(file, node->next->size());
 	
-	for(std::map<char, INode>::iterator it = node->next->begin(); it != node->next->end(); it++) {
-		serialize_int(file, alpha.getIndex(it->first));
+	for(std::map<char, INode>::iterator it = node->next->begin(); it != node->next->end(); it++) 
 		serialize_inode(file, it->second);
-	}
 }
 
 void serialize_st(File &file, Alphabet &alpha) {
@@ -78,8 +76,8 @@ TNode deserialize_node(File &file, Alphabet &alpha) {
 		node.next = new std::map<char, INode>();
 	
 		for(int i = 0; i < next_count; i++) {
-			char key = alpha.getChar(deserialize_int(file));
 			INode value = deserialize_inode(file);
+			char key = str[value->l];
 			(*(node.next))[key] = value;
 		}
 	}
