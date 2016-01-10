@@ -15,5 +15,5 @@ while [ $SZ -lt 50 ]; do
 	echo ""
 	
 	rm "$SZ$TXT"
-	rm "$SZ$INDEX"
+	# rm "$SZ$INDEX"
 done
