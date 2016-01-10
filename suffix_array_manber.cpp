@@ -32,13 +32,6 @@ void Manber::build_suffix_array(Alphabet &alpha) {
 		rank[i] = alpha.getIndex(text[i]) + 1;
 	}
 	
-	/*
-	printf("k = -1\n");
-	for(int i = 0; i < n; ++i)
-		printf(" %2d: (%2d, %2d)\n", sa[i], getRank(sa[i]), getRank(sa[i]));
-	puts("");
-	//*/
-	
 	// Suffix size = 1 ..
 	int k = 1;
 	while(k < n) {
@@ -52,35 +45,19 @@ void Manber::build_suffix_array(Alphabet &alpha) {
 			if(getRank(sa[i - 1]) != getRank(sa[i]) || getRank(sa[i - 1] + k) != getRank(sa[i] + k))
 				++r;
 			
-//			printf(" [%2d, %2d] (%2d, %2d) :: %d\n", sa[i], sa[i] + k, getRank(sa[i]), getRank(sa[i] + k), r);
 			temp[sa[i]] = r;
 		}
-		
-//		puts("");
 		
 		// Update array rank[]
 		for(int i = 0; i < n; ++i)
 			rank[i] = temp[i];
 		
-		/*/ TODO Debug
-		printf("k = %d\n", k);
-		for(int i = 0; i < n; ++i)
-			printf(" %2d: %2d (%2d, %2d)\n", sa[i], rank[i], getRank(sa[i]), getRank(sa[i] + (k << 0)));
-		puts("");
-		//*/
-		
 		// It's over :)
 		if(r == n + 1)
 			break;
 		
-//		if(k >= 1) break;
 		k <<= 1;
 	}
-	
-	/*/ TODO Debug
-	for(int i = 0; i < n; ++i)
-		printf(" %2d: %s\n", sa[i], text + sa[i]);
-	//*/
 }
 
 inline int Manber::getRank(int idx) {
@@ -119,30 +96,9 @@ void Manber::countingSort(int k, int sz) {
 
 inline int Manber::lcp(const char *a, const char *b, int start) {
 	int i;
-	/*/ @Debug
-	for(i = 0; i < start; ++i)
-		assert(a[i] == b[i]);
-	start = 0;
-	//*/
 	for(i = start; a[i] && b[i] && a[i] == b[i]; ++i);
 	return i;
 }
-
-/*
-void Manber::raea(int l, int lcpl, int r, int lcpr, int mid, int lcpm) {
-	for(int i = 0; i < n; ++i) {
-		printf(" %2d: %2d %s", i, sa[i], text + sa[i]);
-		for(int j = sa[i]; j; --j)
-			printf(" ");
-		
-		printf("  ");
-		if(l   == i) printf("l (%2d)", lcpl);
-		if(mid == i) printf("m (%2d)", lcpm);
-		if(r   == i) printf("r (%2d)", lcpr);
-		puts("");
-	} puts("------------------------\n");
-}
-//*/
 
 int Manber::binary_search_left(const char *word) {
 	int lcpl = lcp(word, text + sa[0]); // LCP Left
@@ -161,11 +117,6 @@ int Manber::binary_search_left(const char *word) {
 	if(word[lcpr] && text[sa[n - 1] + lcpr] < word[lcpr])
 		return n;
 	
-	/*/ @Debug
-	bool debug = false;
-	if(debug) raea(0, lcpl, n - 1, lcpr, -1, 0);
-	//*/
-	
 	// l = l-th suffix is "less or equals than" word
 	// r = r-th suffix is "greater than" word
 	int l = 0, r = n - 1;
@@ -173,22 +124,11 @@ int Manber::binary_search_left(const char *word) {
 		int mid = (l + r) >> 1;
 		int lcpm = lcp(word, text + sa[mid], min(lcpl, lcpr)); // LCP Mid
 		
-//		break;
-		
 		if(word[lcpm] <= text[sa[mid] + lcpm])
 			r = mid, lcpr = lcpm;
 		else
 			l = mid + 1, lcpl = lcp(word, text + sa[mid + 1], min(lcpm, lcpr));
-		
-		/*/ @Debug
-		if(debug) raea(l, lcpl, r, lcpr, mid, lcpm);
-		//*/
 	}
-	
-	/*/ @Debug
-	if(debug) printf(" l %2d, lcpl %2d\t r %2d, lcpr %2d\t word[%2d,%2d] = %2d,%2d\n", l, lcpl, r, lcpr, lcpl, lcpr, word[lcpl],
-		word[lcpr]);
-	//*/
 	
 	// is l-th good ?
 	if(! word[lcpl]) return l;
@@ -217,11 +157,6 @@ int Manber::binary_search_right(const char *word) {
 	if(word[lcpl] && word[lcpl] < text[sa[0] + lcpl])
 		return -1;
 	
-	/*/ @Debug
-	bool debug = false;
-	if(debug) raea(0, lcpl, n - 1, lcpr, -1, 0);
-	//*/
-	
 	// l = l-th suffix is "less than" word
 	// r = r-th suffix is "greater or equals than" word
 	int l = 0, r = n - 1;
@@ -233,16 +168,7 @@ int Manber::binary_search_right(const char *word) {
 			r = mid - 1, lcpr = lcp(word, text + sa[mid - 1], min(lcpl, lcpm));
 		else
 			l = mid, lcpl = lcpm;
-		
-		/*/ @Debug
-		if(debug) raea(l, lcpl, r, lcpr, mid, lcpm);
-		//*/
 	}
-	
-	/*/ @Debug
-	if(debug) printf(" l %2d, lcpl %2d\t r %2d, lcpr %2d\t word[%2d,%2d] = %2d,%2d\n", l, lcpl, r, lcpr, lcpl, lcpr,
-		word[lcpl], word[lcpr]);
-	//*/
 	
 	// is r-th good ?
 	if(! word[lcpr]) return r;
@@ -258,12 +184,6 @@ vector<int> Manber::search(const char *word) {
 	vector<int> result;
 	int l = binary_search_left(word);
 	int r = binary_search_right(word);
-	
-	/*/
-	printf("   %s\n", word);
-	printf("     >> search = %2d ~ %2d\n", l, r);
-	puts("============================\n");
-	//*/
 	
 	if(l <= r) {
 		result.resize(r - l + 1);

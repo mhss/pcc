@@ -26,7 +26,6 @@ struct Manber {
 	void countingSort(int k, int sz);
 	void build_suffix_array(Alphabet &alpha);
 	
-	//void raea(int l, int lcpl, int r, int lcpr, int mid, int lcpm);
 	inline int lcp(const char *a, const char *b, int start = 0);
 	int binary_search_left(const char *word);
 	int binary_search_right(const char *word);
