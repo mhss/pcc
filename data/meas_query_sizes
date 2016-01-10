@@ -3,8 +3,6 @@ TXT=$1
 STR=$2
 SZ=0
 
-./ipmt index $TXT
-
 while [ $SZ -lt 11 ]; do
 	./gen $STR $SZ "input"
 	echo "tamanho: $SZ"
@@ -13,5 +11,3 @@ while [ $SZ -lt 11 ]; do
 	rm "input"
 	let SZ=SZ+1
 done
-
-rm *.idx
