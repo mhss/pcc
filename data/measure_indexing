@@ -4,7 +4,7 @@ CNT=3
 
 OUTPUT=""
 while [ $CNT -gt 0 ]; do
-	ADD=$(/usr/bin/time -f'%S %U ' ./ipmt index $TXT 2>&1)
+	ADD=$(/usr/bin/time --quiet -f'%S %U ' ./ipmt index $TXT 2>&1)
 	OUTPUT+="$ADD"
 	
 	let CNT=CNT-1

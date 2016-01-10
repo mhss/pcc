@@ -1,0 +1,14 @@
+#!/bin/bash
+TXT=$1
+STR=$2
+SZ=0
+
+./ipmt index $TXT
+
+while [ $SZ -lt 50 ]; do
+	let SZ=SZ+5
+	./gen $STR $SZ "input"
+	echo "tamanho: $SZ"
+	./measure_query $TXT "input"
+	rm "input"
+done
