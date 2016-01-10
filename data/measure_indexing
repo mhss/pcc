@@ -1,6 +1,6 @@
 #!/bin/bash
 TXT=$1
-CNT=3
+CNT=1
 
 OUTPUT=""
 while [ $CNT -gt 0 ]; do
