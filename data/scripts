@@ -21,12 +21,12 @@ se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no ter
 	indexa txt
 	pra cada palavra de patt, faz a query dela 3 vezes em txt e guarda o tempo
 	mostra a média dos tempos das queries de todas as palavras
-	deleta todos os índices da pasta
 	se quiser mudar a qtd de vezes que cada query é feita, altera a variável CNT logo no começo
 
 ./meas_query_sizes txt str
 	indexa txt
-	pra x em [5, 10, 15, ..., 50]
+	roda ./measure_query txt com um conjunto vazio de padrões
+	pra x em [10, 20, 30, 40, 50]
 		gera um arquivo patt com 100 palavras de tamanho x com os caracteres de str
 		roda ./measure_query txt patt
 
