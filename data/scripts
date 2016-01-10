@@ -12,8 +12,10 @@ se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no ter
 	indexa txt 3 vezes e mostra a média dos tempos
 	se quiser mudar a qtd de vezes, altera a variável CNT logo no começo
 
-./meas_index_sizes txt
+./meas_index_sizes txt index
 	roda ./measure_indexing com os primeiros 5, 10, 15, ..., 50 MB de txt
+		mostra o tempo de indexação e o tamanho do índice gerado
+	se txt fosse indexado diretamente, o nome do arquivo gerado seria index
 
 ./measure_query txt patt
 	indexa txt
@@ -22,8 +24,15 @@ se der erro de permissão ao executar qualquer um, dá "chmod 755 script" no ter
 	deleta todos os índices da pasta
 	se quiser mudar a qtd de vezes que cada query é feita, altera a variável CNT logo no começo
 
+./meas_query_sizes txt str
+	indexa txt
+	pra x em [5, 10, 15, ..., 50]
+		gera um arquivo patt com 100 palavras de tamanho x com os caracteres de str
+		roda ./measure_query txt patt
+
 pra adicionar parâmetros na execução do ipmt, mexe nas linhas:
 test: 5 e 9
 measure_indexing: 7
-measure_query: 6 e 11
+meas_query_sizes: 6
+measure_query: 9
 

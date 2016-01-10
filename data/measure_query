@@ -3,18 +3,20 @@ TXT=$1
 PAT=$2
 CNT=3
 
-./ipmt index $TXT
-
 OUTPUT1=""
 OUTPUT2=""
 while [ $CNT -gt 0 ]; do
-	/usr/bin/time -f'%S %U ' ./ipmt search -c -p $TXT $PAT 1> out1 2> out2
+	/usr/bin/time --quiet -f'%S %U ' ./ipmt search -c -p $TXT $PAT 1> out1 2> out2
 	ADD=$(cat out2)
 	OUTPUT1+="$ADD"
 	
-	/usr/bin/time -f'%S %U ' grep -c -f $PAT $TXT 1> out1 2> out2
+	/usr/bin/time --quiet -f'%S %U ' grep -c -f $PAT $TXT 1> out1 2> out2
 	ADD=$(cat out2)
-	OUTPUT2+="$ADD"
+	if [ "$ADD" = "" ]; then
+		OUTPUT2+=" 0 "
+	else
+		OUTPUT2+="$ADD"
+	fi
 	
 	let CNT=CNT-1
 done
@@ -26,4 +28,3 @@ echo "$OUTPUT2" | ./somador
 
 rm out1
 rm out2
-rm *.idx

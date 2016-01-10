@@ -1,11 +1,19 @@
 #!/bin/bash
 TXT=$1
+INDEX=$2
 SZ=0
 
 while [ $SZ -lt 50 ]; do
 	let SZ=SZ+5
+	
 	./fmb $TXT "$SZ$TXT" $SZ
-	echo "tamanho: $SZ"
+	echo "tamanho: $SZ MB"
+	
 	./measure_indexing "$SZ$TXT"
+	echo "tamanho do indice: "
+	stat -c%s "$SZ$INDEX"
+	echo ""
+	
 	rm "$SZ$TXT"
+	rm "$SZ$INDEX"
 done
