@@ -33,3 +33,14 @@ ibfs@ibfs-virtualBox:~/Desktop/data$
 
 ===============================
 
+./measure_query 35xmls.50MB xml_patt.txt
+ipmt: 
+110.196667
+grep: 
+0.073333
+
+
+===============================
+
+
+
