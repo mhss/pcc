@@ -54,12 +54,10 @@ Dados
 Os arquivos de texto utilizados nos testes estão disponíveis em http://pizzachili.dcc.uchile.cl/texts.html. Utilizamos até os primeiros 35MB de cada um, exceto o PITCHES, pelo seu formato inconveniente.
 Alguns dos padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já outros padrões eram cadeias escolhidas aleatoriamente no texto.
 
-Configuração
+Configurações
 
 Primeiro testamos a configuração que considerávamos mais eficiente: árvore de sufixo com o algoritmo de compressão LZ78. Avaliamos a construção do índice, o tempo gasto e o tamanho do arquivo gerado. Também comparamos o desempenho das consultas por padrões com o do grep.
 Depois comparamos o desempenho do índice de árvore de sufixo com o de array de sufixo. Medimos o tempo de indexação de arquivos com esses dois algoritmos, bem como o tamanho dos arquivos gerados. Também medimos o tempo de consultas de conjuntos de padrões com tamanhos diferentes.
-Não fizemos testes rigorosos com o LZ77.
-
 
 Indexação
 
@@ -88,17 +86,25 @@ dblp.xml	18.550000	38.280000	59.090000	78.110000	99.320000	117.810000	140.230000
 Apesar dos tempos de indexação variarem conforme o arquivo de texto, dá pra notar um comportamento quase linear em todos eles, em função do tamanho do texto original: os arquivos de 5MB demoram uma média de 4.3 segundos por MB, enquanto os maiores chegam a uma média de 5.03 segundos por MB.
 Já sobre o tamanho do índice gerado, quase todos os arquivos têm resultados semelhantes, exceto pelo dblp.xml, cujos arquivos gerados são ligeiramente menores do que os outros. Os arquivos gerados também apresentam um comportamento linear em função do tamanho do arquivo original. Os arquivos de 5MB geram índices de tamanho, em média, 20.8 vezes maior. Já os de 35MB geram arquivos em média 23.55 vezes maiores.
 
-Para comparar a indexação com os algoritmos de árvore de sufixo e array de sufixo, indexamos o primeiro MB de cada um dos 5 arquivos de texto, medindo o tempo e o tamanho do arquivo gerado.
-
-dna		english		proteins	sources		dblp.xml
+Para comparar a indexação com os algoritmos de árvore de sufixo e array de sufixo, indexamos o primeiro MB de cada um dos 5 arquivos de texto, medindo o tempo e o tamanho do arquivo gerado. Para cada algoritmo, a primeira linha diz o tempo em segundos da indexação. Já a segunda diz o tamanho em bytes do arquivo gerado.
 
 
+					dna			english		proteins	sources		dblp.xml
 
+Array de sufixo		4.860000	4.260000	3.490000	3.670000	3.460000
+					4048943		4311222		4420671		4257709		4004974
+
+Árvore de sufixo	4.280000	4.540000	4.700000	4.160000	3.380000
+					19351725	18069210	19109413	19546130	17344483
+
+
+Os tempos de execução foram coletados somente uma vez, portanto não se pode tirar muitas conclusões acerca deles. Não parece haver nenhum padrão em relação aos textos, exceto que com ambos os algoritmos o dblp.xml levou menos tempo para ser indexado do que os outros. Para 1MB de texto, o array de sufixo parece ser ligeiramente mais rápido na indexação do que a árvore de sufixo.
+Já observando os tamanhos dos arquivos, o array de sufixo tem clara vantagem, com uma média de 4MB por MB de texto. A árvore de sufixo, por sua vez, gera arquivos com uma média de 17.8MB por MB de texto. Não observamos nenhum padrão em relação aos textos.
 
 Consulta
 
 proteins
-Indexamos os primeiros 35MB desse arquivo e submetemos consultas de 100 padrões cada, todos de mesmo tamanho. Esses padrões eram gerados aleatoriamente com as letras "ACDEFGHIKLMNPQRSTVWXY", presentes no texto. Como tamanho dos padrões, testamos 2, 4, 6, 8 e 10, além de testar um conjunto sem padrões para comparação. Também executamos consultas com o grep. Os resultados foram estes:
+Indexamos os primeiros 35MB desse arquivo e submetemos consultas de 100 padrões cada, todos de mesmo tamanho. Esses padrões eram gerados aleatoriamente com as letras "ACDEFGHIKLMNPQRSTVWXY", presentes no texto. Como tamanho dos padrões, testamos 2, 4, 6, 8 e 10, além de testar um conjunto sem padrões para comparação. Também executamos consultas com o grep. Os resultados em segundos foram estes:
 
 
 		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
@@ -108,7 +114,7 @@ grep	0.023333		0.040000	0.210000	0.263333	0.233333	0.270000
 
 
 dna
-Fizemos a mesma coisa que o proteins, só trocando o conjunto de letras por "ACGT". Os resultados foram estes:
+Fizemos a mesma coisa que o proteins, só trocando o conjunto de letras por "ACGT". Os resultados em segundos foram estes:
 
 
 		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
@@ -121,7 +127,7 @@ Para o nosso programa, os conjuntos de padrões de tamanho 2 têm consultas bem 
 Fora isso, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. O tempo da consulta no grep, por outro lado, parece crescer em função do tamanho dos padrões, como era de se esperar. Cada consulta no nosso programa foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
 
 english
-Para reduzir o efeito da quantidade de ocorrências do conjunto de padrões no texto, realizamos testes com um conjunto gerado da seguinte maneira: aleatoriamente foram escolhidas 20 cadeias de mesmo tamanho do próprio texto de entrada, nenhuma com espaços ou quebras de linha.
+Para reduzir o efeito da quantidade de ocorrências do conjunto de padrões no texto, realizamos testes com um conjunto gerado da seguinte maneira: aleatoriamente foram escolhidas 20 cadeias de mesmo tamanho do próprio texto de entrada, nenhuma com espaços ou quebras de linha. Os resultados em segundos foram estes:
 
 
 		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8
@@ -132,8 +138,31 @@ grep	0.046667		0.086667	0.186667	0.180000	0.183333
 
 A consulta do conjunto de padrões de tamanho 2 ainda parece demorar mais tempo com nosso programa. Possivelmente, a forma como os conjuntos foram escolhidos não evita que este possua mais ocorrências que os outros. Também parece que as outras consultas gastam cada vez menos tempo à medida que o tamanho dos padrões aumenta, possivelmente por causa da diminuição gradual do número do ocorrências.
 
-Para comparar , p, 
+Para comparar as consultas com os algoritmos de árvore de sufixo e array de sufixo, testamos os índices de 1MB dos 5 textos diferentes, usando conjuntos de 100 padrões de mesmo tamanho, obtidos a partir dos próprios textos. Variamos o tamanho dos padrões entre 2 e 10. Também medimos o tempo com consultas sem nenhum padrão. Os resultados em segundos foram estes:
 
+
+dna					nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+Array de sufixo		0.690000		0.743333	0.693333	0.676667	0.720000	0.706667 
+Árvore de sufixo	3.273333		3.490000	3.126667	3.196667	3.156667	3.210000 
+
+english				nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+Array de sufixo		0.780000		0.793333	0.746667	0.750000	0.733333	0.766667 
+Árvore de sufixo	3.063333		2.970000	2.986667	3.063333	2.906667	2.833333 
+
+proteins			nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+Array de sufixo		0.786667		0.810000	0.820000	0.830000	0.846667	0.780000 
+Árvore de sufixo	2.800000		2.896667	2.940000	2.930000	2.903333	2.680000 
+
+sources				nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+Array de sufixo		0.756667		0.760000	0.740000	0.753333	0.686667	0.760000 
+Árvore de sufixo	2.763333		2.800000	2.880000	2.913333	2.613333	2.870000 
+
+dblp.xml			nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+Array de sufixo		0.686667		0.726667	0.706667	0.756667	0.700000	0.700000 
+Árvore de sufixo	2.586667		2.526667	2.466667	2.646667	2.430000	2.546667 
+
+
+Em quase todas as consultas, o array de sufixo mostrou um desempenho mais de 3 vezes superior. Fora isso, não se nota nenhum padrão em relação ao tamanho dos padrões do conjunto. Porém novamente, com ambos os algoritmos, algumas consultas estão com um tempo menor do que o conjunto vazio. Não sabemos explicar isso.
 
 Conclusões
 
@@ -142,7 +171,9 @@ Os tamanhos dos arquivos gerados, diferentemente dos tempos de execução, não 
 
 Sobre as consultas, para índices de arquivos muito grandes, como 35MB, o tempo para leitura do arquivo de índice, construção da árvore de sufixo e descompressão do texto parece enorme em comparação ao tempo gasto com as consultas propriamente ditas. E além de encontrar as ocorrências, parece que determinar e contar as linhas às quais elas pertencem também gasta um tempo considerável. Para que essa ferramenta fosse eficiente o bastante para ser útil, seria necessário utilizar o índice sem carregá-lo por inteiro na memória, bem como mostrar as linhas com ocorrências de forma mais eficiente.
 
+A indexação com array de sufixo mostrou ser a mais eficiente com arquivos de 1MB, tanto no tempo das operações como no tamanho dos arquivos gerados. Considerando a complexidade assintótica da implementação, acreditamos que, para arquivos menores de 1MB, o array de sufixo continuaria tendo vantagem. Porém, se fosse para indexar arquivos muito maiores, como 1GB+, ainda acreditamos que árvore de sufixo seria uma opção melhor.
+É importante ressaltar que nós focamos na implementação da árvore de sufixo, e não utilizamos as técnicas mais eficientes disponíveis na literatura para construção e busca do array de sufixo.
 
-Tanto a indexação como as consultas usando array de sufixo como índice mostraram um desempenho inferior ao da árvore de sufixo. 
-Nós focamos na implementação neste último, e não utilizamos as técnicas mais eficientes com o array de sufixo.
+
+
 
