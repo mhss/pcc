@@ -1,0 +1,35 @@
+./meas_query_sizes 35proteins.50MB ACDEFGHIKLMNPQRSTVWXY
+tamanho: 0
+ipmt: 
+121.360000
+grep: 
+0.023333
+tamanho: 2
+ipmt: 
+128.043333
+grep: 
+0.040000
+tamanho: 4
+ipmt: 
+121.443333
+grep: 
+0.210000
+tamanho: 6
+ipmt: 
+119.613333
+grep: 
+0.263333
+tamanho: 8
+ipmt: 
+121.243333
+grep: 
+0.233333
+tamanho: 10
+ipmt: 
+121.323333
+grep: 
+0.270000
+ibfs@ibfs-virtualBox:~/Desktop/data$ 
+
+===============================
+
