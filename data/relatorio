@@ -44,14 +44,44 @@ Não conseguimos executar o programa corretamente com textos maiores que 35MB.
 
 Testes
 
-RAEL MUDA AQUI
-Os testes da ferramenta foram realizados num computador com processador Intel Core i3 de 2.53GHz com 3.7 GB de memória RAM, com um SO Ubuntu 13.10 de 32 bits.
+Os testes da ferramenta foram realizados em uma máquina virtual XUbuntu. A máquina hospedeira possui processador Intel Core i7 de 2.00 GHz, memória de 16GB, com SO Windows 8.1. Já a máquina virtual, possui 8 GB de memória e dois dos 4 núcleos de processamento.
+Medimos o tempo gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados em comparação com os originais. Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos, variando o tamanho dos padrões buscados. Cada consulta foi realizada três vezes para se obter uma média, e o desempenho foi comparado com o do programa grep ...
+
+Dados
+
+Os arquivos de texto utilizados nos testes estão disponíveis em http://pizzachili.dcc.uchile.cl/texts.html. Utilizamos até os primeiros 35MB de cada um, exceto o PITCHES, pelo seu formato inconveniente.
+Os padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já para os textos english e dblp.xml testamos também conjuntos de 20 cadeias frequentes neles.
+
+Configuração
+
+Só testamos a configuração que consideramos mais eficiente: árvore de sufixo com o algoritmo de compressão LZ78. Tanto a indexação como as consultas usando array de sufixo como índice mostraram um desempenho inferior ao da árvore de sufixo. Nós focamos na implementação neste último, e não utilizamos as técnicas mais eficientes com o array de sufixo.
+
+Indexação
+
+Para cada arquivo de texto, testamos a indexação dos primeiros 5, 10, ... 35 MB deles. Medimos o tempo de indexação e o tamanho dos arquivos gerados.
+
+english
+24.210000 49.690000 75.990000 102.420000 129.080000 157.760000 186.540000
+106145741 231637987 355041296 491003716 620815992 737319871 858603287
+
+dna
+21.960000 45.070000 68.960000 93.180000 119.100000 144.990000 201.400000
+108008118 226149970 347878776 470663447 597206517 722902754 849338137
+
+sources
+18.270000 37.620000 59.640000 80.390000 101.650000 119.970000 149.680000
+107788837 226834624 347229033 469087606 595764669 719374196 842817283
+
+proteins
+24.600000 50.380000 80.660000 108.170000 141.550000 167.810000 204.140000
+103484312 229733955 353999112 475259394 599355976 709242764 817903353
+
+dblp.xml
+18.550000 38.280000 59.090000 78.110000 99.320000 117.810000 140.230000
+95245799 200100552 308498854 416999777 528990260 641102313 752168944
+
+Apesar dos tempos de indexação variarem conforme o arquivo de texto, dá pra notar um comportamento quase linear em todos eles, em função do tamanho do texto original: os arquivos de 5MB demoram uma média de 4.3 segundos por MB, enquanto os maiores chegam a uma média de 5.03 segundos por MB.
+Já sobre o tamanho do índice gerado, quase todos os arquivos têm resultados semelhantes, exceto pelo dblp.xml, cujos arquivos gerados são ligeiramente menores do que os outros. Os arquivos gerados também apresentam um comportamento linear em função do tamanho do arquivo original. Os arquivos de 5MB geram índices de tamanho, em média, 20.8 vezes maior. Já os de 35MB geram arquivos em média 23.55 vezes maiores.
 
 
-Medimos o tempo médio gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados. Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Procuramos variar o tipo e tamanho dos textos e padrões buscados, algoritmos de compressão e tipos de índices utilizados. O desempenho das consultas do projeto foi comparado com o do programa grep ...
-
---------------
-Os testes da ferramenta foram realizados em uma máquina virtual XUbuntu. A máquina hospedeira possui processador Intel Core i7 de 2.00 GHz, memória de 16GB, com SO Windows 8.1. Já a máquina virtual, possui 8 GB de memória e dois, dos 4 núcleos de processamento.
-
-
-
+Consulta
