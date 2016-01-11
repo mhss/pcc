@@ -1,0 +1,195 @@
+./meas_sa_x_st dna.50MB 
+index 1: 
+6.610000
+index 2: 
+7.440000
+
+tamanho: 2
+ipmt 1: 
+0.686667
+ipmt 2: 
+0.723333
+
+tamanho: 4
+ipmt 1: 
+0.706667
+ipmt 2: 
+0.713333
+
+tamanho: 6
+ipmt 1: 
+0.696667
+ipmt 2: 
+0.710000
+
+tamanho: 8
+ipmt 1: 
+0.673333
+ipmt 2: 
+0.703333
+
+tamanho: 10
+ipmt 1: 
+0.690000
+ipmt 2: 
+0.680000
+
+=================================
+
+./meas_sa_x_st english.50MB 
+index 1: 
+6.800000
+index 2: 
+4.560000
+
+tamanho: 2
+ipmt 1: 
+0.826667
+ipmt 2: 
+0.803333
+
+tamanho: 4
+ipmt 1: 
+0.710000
+ipmt 2: 
+0.696667
+
+tamanho: 6
+ipmt 1: 
+0.726667
+ipmt 2: 
+0.736667
+
+tamanho: 8
+ipmt 1: 
+0.726667
+ipmt 2: 
+0.756667
+
+tamanho: 10
+ipmt 1: 
+0.760000
+ipmt 2: 
+0.730000
+
+
+============================
+
+
+./meas_sa_x_st proteins.50MB 
+index 1: 
+3.560000
+index 2: 
+5.090000
+
+tamanho: 2
+ipmt 1: 
+0.813333
+ipmt 2: 
+0.803333
+
+tamanho: 4
+ipmt 1: 
+0.770000
+ipmt 2: 
+0.730000
+
+tamanho: 6
+ipmt 1: 
+0.763333
+ipmt 2: 
+0.760000
+
+tamanho: 8
+ipmt 1: 
+0.770000
+ipmt 2: 
+0.760000
+
+tamanho: 10
+ipmt 1: 
+0.736667
+ipmt 2: 
+0.756667
+
+==========================================
+
+./meas_sa_x_st sources.50MB 
+index 1: 
+2.780000
+index 2: 
+3.420000
+
+tamanho: 2
+ipmt 1: 
+0.696667
+ipmt 2: 
+0.763333
+
+tamanho: 4
+ipmt 1: 
+0.710000
+ipmt 2: 
+0.696667
+
+tamanho: 6
+ipmt 1: 
+0.723333
+ipmt 2: 
+0.710000
+
+tamanho: 8
+ipmt 1: 
+0.693333
+ipmt 2: 
+0.706667
+
+tamanho: 10
+ipmt 1: 
+0.696667
+ipmt 2: 
+0.723333
+
+
+===============================
+
+./meas_sa_x_st xmls.50MB 
+index 1: 
+4.520000
+index 2: 
+4.470000
+
+tamanho: 2
+ipmt 1: 
+0.753333
+ipmt 2: 
+0.736667
+
+tamanho: 4
+ipmt 1: 
+0.660000
+ipmt 2: 
+0.673333
+
+tamanho: 6
+ipmt 1: 
+0.683333
+ipmt 2: 
+0.713333
+
+tamanho: 8
+ipmt 1: 
+0.736667
+ipmt 2: 
+0.706667
+
+tamanho: 10
+ipmt 1: 
+0.713333
+ipmt 2: 
+0.676667
+
+==========================
+
+
+

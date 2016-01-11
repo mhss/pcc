@@ -76,5 +76,41 @@ grep:
 
 ============================
 
+./meas_query_filter_sizes 35english.50MB 
+tamanho: 0
+ipmt: 
+121.790000
+grep: 
+0.046667
+
+tamanho: 2
+ipmt: 
+130.266667
+grep: 
+0.086667
+
+tamanho: 4
+ipmt: 
+123.966667
+grep: 
+0.186667
+
+tamanho: 6
+ipmt: 
+123.916667
+grep: 
+0.180000
+
+tamanho: 8
+ipmt: 
+123.873333
+grep: 
+0.183333
+
+tamanho: 10
+ipmt: 
+123.710000
+grep: 
+ibfs@ib
 
 
