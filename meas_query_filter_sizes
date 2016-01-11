@@ -1,0 +1,12 @@
+#!/bin/bash
+TXT=$1
+SZ=10
+
+while [ $SZ -lt 12 ]; do
+	./gen_filter $TXT $SZ "input"
+	echo "tamanho: $SZ"
+	./measure_query $TXT "input"
+	
+	rm "input"
+	let SZ=SZ+2
+done
