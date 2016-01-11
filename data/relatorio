@@ -41,6 +41,7 @@ O programa só aceita textos com caracteres ASCII com valor de 0 a 255.
 O consumo de memória durante a indexação tende a ser muito grande, chegando a 3GB para arquivos de mais de 25MB.
 O programa só aceita padrões de no máximo 1000 caracteres.
 Não conseguimos executar o programa corretamente com textos maiores que 35MB.
+O custo assintótico de alguns dos algoritmos utilizados é, na verdade, multiplicado pelo log do tamanho do alfabeto utilizado, por causa da utilização frequente da estrutura de dados std::map.
 
 Testes
 
@@ -83,5 +84,16 @@ dblp.xml
 Apesar dos tempos de indexação variarem conforme o arquivo de texto, dá pra notar um comportamento quase linear em todos eles, em função do tamanho do texto original: os arquivos de 5MB demoram uma média de 4.3 segundos por MB, enquanto os maiores chegam a uma média de 5.03 segundos por MB.
 Já sobre o tamanho do índice gerado, quase todos os arquivos têm resultados semelhantes, exceto pelo dblp.xml, cujos arquivos gerados são ligeiramente menores do que os outros. Os arquivos gerados também apresentam um comportamento linear em função do tamanho do arquivo original. Os arquivos de 5MB geram índices de tamanho, em média, 20.8 vezes maior. Já os de 35MB geram arquivos em média 23.55 vezes maiores.
 
-
 Consulta
+
+
+
+Conclusões
+
+Sobre a indexação, os tempos de execução aparentam se comportar linearmente em função do tamanho do arquivo indexado, além de depender do tipo de texto. Portanto, acreditamos ter implementado corretamente os algoritmos Ukkonen e LZ78, embora ainda hajam aspectos de baixo nível que possam ser otimizados.
+Os tamanhos dos arquivos gerados, diferentemente dos tempos de execução, não diferem muito entre si de um tipo de texto para outro. Com exceção do dblp.xml, eles aparentam depender apenas do tamanho do arquivo. Esperávamos que as propriedades do texto influenciassem o tamanho do índice gerado. Mas parece que o armazenamento da árvore de sufixo domina o tamanho do arquivo, considerando que ela não é comprimida, apenas codificada de uma forma que consideramos eficiente. Também devemos levar em conta que, dada a forma como foi implementada, levando em conta o caractere nulo, a árvore possui no mínimo N nós, onde N é o tamanho do texto indexado. Portanto, ela não é tão econômica em espaço quanto possível na teoria.
+
+
+
+
+
