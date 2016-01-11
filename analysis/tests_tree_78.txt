@@ -42,5 +42,39 @@ grep:
 
 ===============================
 
+./meas_query_sizes 35dna.50MB ACGT
+tamanho: 0
+ipmt: 
+136.146667
+grep: 
+0.023333
+tamanho: 2
+ipmt: 
+248.160000
+grep: 
+0.026667
+tamanho: 4
+ipmt: 
+140.176667
+grep: 
+0.026667
+tamanho: 6
+ipmt: 
+135.796667
+grep: 
+0.036667
+tamanho: 8
+ipmt: 
+135.863333
+grep: 
+0.050000
+tamanho: 10
+ipmt: 
+134.696667
+grep: 
+0.093333
+
+============================
+
 
 
