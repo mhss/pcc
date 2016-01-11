@@ -97,13 +97,25 @@ ipmt	121.360000		128.043333	121.443333	119.613333	121.243333	121.323333
 grep	0.023333		0.040000	0.210000	0.263333	0.233333	0.270000
 
 
-Para o nosso programa, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. Cada consulta foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
+dna
+Fizemos a mesma coisa que o proteins, só trocando o conjunto de letras por "ACGT". Os resultados foram estes:
+
+
+		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+
+ipmt	136.146667		248.160000	140.176667	135.796667	135.863333	134.696667
+grep	0.023333		0.026667	0.026667	0.036667	0.050000	0.093333
+
+
+Para o nosso programa, os conjuntos de padrões de tamanho 2 têm consultas bem mais demoradas. Isto provavelmente é por causa da alta probabilidade de ocorrência de padrões de dois caracteres, especialmente no DNA, por seu alfabeto bem restrito. O tempo extra deve ser para identificar e contar as linhas com ocorrências. Porém, tal efeito não ocorre no grep, por ser uma implementação mais eficiente.
+Fora isso, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. O tempo da consulta no grep, por outro lado, parece crescer em função do tamanho dos padrões, como é de se esperar. Cada consulta no nosso programa foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
 
 Conclusões
 
 Sobre a indexação, os tempos de execução aparentam se comportar linearmente em função do tamanho do arquivo indexado, além de depender do tipo de texto. Portanto, acreditamos ter implementado corretamente os algoritmos Ukkonen e LZ78, embora ainda hajam aspectos de baixo nível que possam ser otimizados.
 Os tamanhos dos arquivos gerados, diferentemente dos tempos de execução, não diferem muito entre si de um tipo de texto para outro. Com exceção do dblp.xml, eles aparentam depender apenas do tamanho do arquivo. Esperávamos que as propriedades do texto influenciassem o tamanho do índice gerado. Mas parece que o armazenamento da árvore de sufixo domina o tamanho do arquivo, considerando que ela não é comprimida, apenas codificada de uma forma que consideramos eficiente. Também devemos levar em conta que, dada a forma como foi implementada, levando em conta o caractere nulo, a árvore possui no mínimo N nós, onde N é o tamanho do texto indexado. Portanto, ela não é tão econômica em espaço quanto possível na teoria.
 
+Sobre as consultas, para índices de arquivos muito grandes, como 35MB, o tempo para leitura do arquivo de índice, construção da árvore de sufixo e descompressão do texto parece ser grande demais para que se possa sequer avaliar a influência dos padrões da consulta no tempo de execução. Para que essa ferramenta fosse eficiente o bastante para ser útil, seria necessário utilizar o índice sem carregá-lo por inteiro na memória.
 
 
 
