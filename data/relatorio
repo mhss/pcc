@@ -47,16 +47,19 @@ Testes
 
 Os testes da ferramenta foram realizados em uma máquina virtual XUbuntu. A máquina hospedeira possui processador Intel Core i7 de 2.00 GHz, memória de 16GB, com SO Windows 8.1. Já a máquina virtual, possui 8 GB de memória e dois dos 4 núcleos de processamento.
 Medimos o tempo gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados em comparação com os originais. Testamos 5 arquivos de texto diferentes, pegando partes de tamanhos entre 5 e 35MB.
-Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Cada consulta foi realizada três vezes para se obter uma média, e o desempenho foi comparado com o do programa grep. Para alguns textos geramos padrões aleatoriamente, variando seus tamanhos. Para outros, testamos conjuntos de cadeias frequentes. Também testamos conjuntos vazios de padrões, para medir o tempo de leitura do índice e descompressão do texto.
+Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Cada consulta foi realizada três vezes para se obter uma média, e o desempenho foi comparado com o do programa GNU grep 2.16. Para alguns textos geramos padrões aleatoriamente, variando seus tamanhos. Para outros, testamos conjuntos de cadeias presentes no texto. Também testamos conjuntos vazios de padrões, para medir o tempo de leitura do índice e descompressão do texto.
 
 Dados
 
 Os arquivos de texto utilizados nos testes estão disponíveis em http://pizzachili.dcc.uchile.cl/texts.html. Utilizamos até os primeiros 35MB de cada um, exceto o PITCHES, pelo seu formato inconveniente.
-Alguns dos padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já para os textos english e dblp.xml testamos também conjuntos de cadeias frequentes neles.
+Alguns dos padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já outros padrões eram cadeias escolhidas aleatoriamente no texto.
 
 Configuração
 
-Só testamos a configuração que consideramos mais eficiente: árvore de sufixo com o algoritmo de compressão LZ78. Tanto a indexação como as consultas usando array de sufixo como índice mostraram um desempenho inferior ao da árvore de sufixo. Nós focamos na implementação neste último, e não utilizamos as técnicas mais eficientes com o array de sufixo.
+Primeiro testamos a configuração que considerávamos mais eficiente: árvore de sufixo com o algoritmo de compressão LZ78. Avaliamos a construção do índice, o tempo gasto e o tamanho do arquivo gerado. Também comparamos o desempenho das consultas por padrões com o do grep.
+Depois comparamos o desempenho do índice de árvore de sufixo com o de array de sufixo. Medimos o tempo de indexação de arquivos com esses dois algoritmos, bem como o tamanho dos arquivos gerados. Também medimos o tempo de consultas de conjuntos de padrões com tamanhos diferentes.
+Não fizemos testes rigorosos com o LZ77.
+
 
 Indexação
 
@@ -85,6 +88,13 @@ dblp.xml	18.550000	38.280000	59.090000	78.110000	99.320000	117.810000	140.230000
 Apesar dos tempos de indexação variarem conforme o arquivo de texto, dá pra notar um comportamento quase linear em todos eles, em função do tamanho do texto original: os arquivos de 5MB demoram uma média de 4.3 segundos por MB, enquanto os maiores chegam a uma média de 5.03 segundos por MB.
 Já sobre o tamanho do índice gerado, quase todos os arquivos têm resultados semelhantes, exceto pelo dblp.xml, cujos arquivos gerados são ligeiramente menores do que os outros. Os arquivos gerados também apresentam um comportamento linear em função do tamanho do arquivo original. Os arquivos de 5MB geram índices de tamanho, em média, 20.8 vezes maior. Já os de 35MB geram arquivos em média 23.55 vezes maiores.
 
+Para comparar a indexação com os algoritmos de árvore de sufixo e array de sufixo, indexamos o primeiro MB de cada um dos 5 arquivos de texto, medindo o tempo e o tamanho do arquivo gerado.
+
+dna		english		proteins	sources		dblp.xml
+
+
+
+
 Consulta
 
 proteins
@@ -108,14 +118,31 @@ grep	0.023333		0.026667	0.026667	0.036667	0.050000	0.093333
 
 
 Para o nosso programa, os conjuntos de padrões de tamanho 2 têm consultas bem mais demoradas. Isto provavelmente é por causa da alta probabilidade de ocorrência de padrões de dois caracteres, especialmente no DNA, por seu alfabeto bem restrito. O tempo extra deve ser para identificar e contar as linhas com ocorrências. Porém, tal efeito não ocorre no grep, por ser uma implementação mais eficiente.
-Fora isso, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. O tempo da consulta no grep, por outro lado, parece crescer em função do tamanho dos padrões, como é de se esperar. Cada consulta no nosso programa foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
+Fora isso, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. O tempo da consulta no grep, por outro lado, parece crescer em função do tamanho dos padrões, como era de se esperar. Cada consulta no nosso programa foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
+
+english
+Para reduzir o efeito da quantidade de ocorrências do conjunto de padrões no texto, realizamos testes com um conjunto gerado da seguinte maneira: aleatoriamente foram escolhidas 20 cadeias de mesmo tamanho do próprio texto de entrada, nenhuma com espaços ou quebras de linha.
+
+
+		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8
+
+ipmt	121.790000		130.266667	123.966667	123.916667	123.873333
+grep	0.046667		0.086667	0.186667	0.180000	0.183333
+
+
+A consulta do conjunto de padrões de tamanho 2 ainda parece demorar mais tempo com nosso programa. Possivelmente, a forma como os conjuntos foram escolhidos não evita que este possua mais ocorrências que os outros. Também parece que as outras consultas gastam cada vez menos tempo à medida que o tamanho dos padrões aumenta, possivelmente por causa da diminuição gradual do número do ocorrências.
+
+Para comparar , p, 
+
 
 Conclusões
 
 Sobre a indexação, os tempos de execução aparentam se comportar linearmente em função do tamanho do arquivo indexado, além de depender do tipo de texto. Portanto, acreditamos ter implementado corretamente os algoritmos Ukkonen e LZ78, embora ainda hajam aspectos de baixo nível que possam ser otimizados.
 Os tamanhos dos arquivos gerados, diferentemente dos tempos de execução, não diferem muito entre si de um tipo de texto para outro. Com exceção do dblp.xml, eles aparentam depender apenas do tamanho do arquivo. Esperávamos que as propriedades do texto influenciassem o tamanho do índice gerado. Mas parece que o armazenamento da árvore de sufixo domina o tamanho do arquivo, considerando que ela não é comprimida, apenas codificada de uma forma que consideramos eficiente. Também devemos levar em conta que, dada a forma como foi implementada, levando em conta o caractere nulo, a árvore possui no mínimo N nós, onde N é o tamanho do texto indexado. Portanto, ela não é tão econômica em espaço quanto possível na teoria.
 
-Sobre as consultas, para índices de arquivos muito grandes, como 35MB, o tempo para leitura do arquivo de índice, construção da árvore de sufixo e descompressão do texto parece ser grande demais para que se possa sequer avaliar a influência dos padrões da consulta no tempo de execução. Para que essa ferramenta fosse eficiente o bastante para ser útil, seria necessário utilizar o índice sem carregá-lo por inteiro na memória.
+Sobre as consultas, para índices de arquivos muito grandes, como 35MB, o tempo para leitura do arquivo de índice, construção da árvore de sufixo e descompressão do texto parece enorme em comparação ao tempo gasto com as consultas propriamente ditas. E além de encontrar as ocorrências, parece que determinar e contar as linhas às quais elas pertencem também gasta um tempo considerável. Para que essa ferramenta fosse eficiente o bastante para ser útil, seria necessário utilizar o índice sem carregá-lo por inteiro na memória, bem como mostrar as linhas com ocorrências de forma mais eficiente.
 
 
+Tanto a indexação como as consultas usando array de sufixo como índice mostraram um desempenho inferior ao da árvore de sufixo. 
+Nós focamos na implementação neste último, e não utilizamos as técnicas mais eficientes com o array de sufixo.
 
