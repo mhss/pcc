@@ -46,12 +46,13 @@ O custo assintótico de alguns dos algoritmos utilizados é, na verdade, multipl
 Testes
 
 Os testes da ferramenta foram realizados em uma máquina virtual XUbuntu. A máquina hospedeira possui processador Intel Core i7 de 2.00 GHz, memória de 16GB, com SO Windows 8.1. Já a máquina virtual, possui 8 GB de memória e dois dos 4 núcleos de processamento.
-Medimos o tempo gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados em comparação com os originais. Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos, variando o tamanho dos padrões buscados. Cada consulta foi realizada três vezes para se obter uma média, e o desempenho foi comparado com o do programa grep ...
+Medimos o tempo gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados em comparação com os originais. Testamos 5 arquivos de texto diferentes, pegando partes de tamanhos entre 5 e 35MB.
+Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Cada consulta foi realizada três vezes para se obter uma média, e o desempenho foi comparado com o do programa grep. Para alguns textos geramos padrões aleatoriamente, variando seus tamanhos. Para outros, testamos conjuntos de cadeias frequentes. Também testamos conjuntos vazios de padrões, para medir o tempo de leitura do índice e descompressão do texto.
 
 Dados
 
 Os arquivos de texto utilizados nos testes estão disponíveis em http://pizzachili.dcc.uchile.cl/texts.html. Utilizamos até os primeiros 35MB de cada um, exceto o PITCHES, pelo seu formato inconveniente.
-Os padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já para os textos english e dblp.xml testamos também conjuntos de 20 cadeias frequentes neles.
+Alguns dos padrões utilizados nas consultas foram gerados aleatoriamente em conjuntos de 100, com tamanhos entre 2 e 10 e formados apenas por letras presentes nos arquivos de texto onde eram buscados. Já para os textos english e dblp.xml testamos também conjuntos de cadeias frequentes neles.
 
 Configuração
 
@@ -60,39 +61,48 @@ Só testamos a configuração que consideramos mais eficiente: árvore de sufixo
 Indexação
 
 Para cada arquivo de texto, testamos a indexação dos primeiros 5, 10, ... 35 MB deles. Medimos o tempo de indexação e o tamanho dos arquivos gerados.
+Para cada arquivo, a primeira linha diz o tempo em segundos da indexação. Já a segunda diz o tamanho em bytes do arquivo gerado.
 
-english
-24.210000 49.690000 75.990000 102.420000 129.080000 157.760000 186.540000
-106145741 231637987 355041296 491003716 620815992 737319871 858603287
 
-dna
-21.960000 45.070000 68.960000 93.180000 119.100000 144.990000 201.400000
-108008118 226149970 347878776 470663447 597206517 722902754 849338137
+			5MB			10MB		15MB		20MB		25MB		30MB		35MB
 
-sources
-18.270000 37.620000 59.640000 80.390000 101.650000 119.970000 149.680000
-107788837 226834624 347229033 469087606 595764669 719374196 842817283
+english		24.210000	49.690000	75.990000	102.420000	129.080000	157.760000	186.540000
+			106145741	231637987	355041296	491003716	620815992	737319871	858603287
 
-proteins
-24.600000 50.380000 80.660000 108.170000 141.550000 167.810000 204.140000
-103484312 229733955 353999112 475259394 599355976 709242764 817903353
+dna			21.960000	45.070000	68.960000	93.180000	119.100000	144.990000	201.400000
+			108008118	226149970	347878776	470663447	597206517	722902754	849338137
 
-dblp.xml
-18.550000 38.280000 59.090000 78.110000 99.320000 117.810000 140.230000
-95245799 200100552 308498854 416999777 528990260 641102313 752168944
+sources		18.270000	37.620000	59.640000	80.390000	101.650000	119.970000	149.680000
+			107788837	226834624	347229033	469087606	595764669	719374196	842817283
+
+proteins	24.600000	50.380000	80.660000	108.170000	141.550000	167.810000	204.140000
+			103484312	229733955	353999112	475259394	599355976	709242764	817903353
+
+dblp.xml	18.550000	38.280000	59.090000	78.110000	99.320000	117.810000	140.230000
+			95245799	200100552	308498854	416999777	528990260	641102313	752168944
+
 
 Apesar dos tempos de indexação variarem conforme o arquivo de texto, dá pra notar um comportamento quase linear em todos eles, em função do tamanho do texto original: os arquivos de 5MB demoram uma média de 4.3 segundos por MB, enquanto os maiores chegam a uma média de 5.03 segundos por MB.
 Já sobre o tamanho do índice gerado, quase todos os arquivos têm resultados semelhantes, exceto pelo dblp.xml, cujos arquivos gerados são ligeiramente menores do que os outros. Os arquivos gerados também apresentam um comportamento linear em função do tamanho do arquivo original. Os arquivos de 5MB geram índices de tamanho, em média, 20.8 vezes maior. Já os de 35MB geram arquivos em média 23.55 vezes maiores.
 
 Consulta
 
+proteins
+Indexamos os primeiros 35MB desse arquivo e submetemos consultas de 100 padrões cada, todos de mesmo tamanho. Esses padrões eram gerados aleatoriamente com as letras "ACDEFGHIKLMNPQRSTVWXY", presentes no texto. Como tamanho dos padrões, testamos 2, 4, 6, 8 e 10, além de testar um conjunto sem padrões para comparação. Também executamos consultas com o grep. Os resultados foram estes:
 
+
+		nenhum padrão	tamanho 2	tamanho 4	tamanho 6	tamanho 8	tamanho 10
+
+ipmt	121.360000		128.043333	121.443333	119.613333	121.243333	121.323333
+grep	0.023333		0.040000	0.210000	0.263333	0.233333	0.270000
+
+
+Para o nosso programa, não há nenhuma relação aparente entre o tamanho dos padrões e o tempo de busca, mesmo descontando o tempo do conjunto vazio. Inclusive, algumas consultas parecem levar ligeiramente menos tempo do que se não houvesse padrão nenhum. Cada consulta foi repetida três vezes para se tirar uma média, mas parece que isso não foi suficiente para se obter resultados robustos.
 
 Conclusões
 
 Sobre a indexação, os tempos de execução aparentam se comportar linearmente em função do tamanho do arquivo indexado, além de depender do tipo de texto. Portanto, acreditamos ter implementado corretamente os algoritmos Ukkonen e LZ78, embora ainda hajam aspectos de baixo nível que possam ser otimizados.
 Os tamanhos dos arquivos gerados, diferentemente dos tempos de execução, não diferem muito entre si de um tipo de texto para outro. Com exceção do dblp.xml, eles aparentam depender apenas do tamanho do arquivo. Esperávamos que as propriedades do texto influenciassem o tamanho do índice gerado. Mas parece que o armazenamento da árvore de sufixo domina o tamanho do arquivo, considerando que ela não é comprimida, apenas codificada de uma forma que consideramos eficiente. Também devemos levar em conta que, dada a forma como foi implementada, levando em conta o caractere nulo, a árvore possui no mínimo N nós, onde N é o tamanho do texto indexado. Portanto, ela não é tão econômica em espaço quanto possível na teoria.
-
 
 
 
