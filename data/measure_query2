@@ -1,0 +1,27 @@
+#!/bin/bash
+TXT1=$1
+TXT2=$2
+PAT=$3
+CNT=3
+
+OUTPUT1=""
+OUTPUT2=""
+while [ $CNT -gt 0 ]; do
+	/usr/bin/time --quiet -f'%S %U ' ./ipmt search -c -p $TXT1 $PAT 1> out1 2> out2
+	ADD=$(cat out2)
+	OUTPUT1+="$ADD"
+	
+	/usr/bin/time --quiet -f'%S %U ' ./ipmt search -c -p $TXT2 $PAT 1> out1 2> out2
+	ADD=$(cat out2)
+	OUTPUT2+="$ADD"
+	
+	let CNT=CNT-1
+done
+
+echo "ipmt 1: "
+echo "$OUTPUT1" | ./somador
+echo "ipmt 2: "
+echo "$OUTPUT2" | ./somador
+
+rm out1
+rm out2

@@ -1,0 +1,14 @@
+#!/bin/bash
+TXT=$1
+PAT=$2
+TXT1="1$TXT"
+TXT2="2$TXT"
+
+./fmb $TXT $TXT1 1
+./fmb $TXT $TXT2 1
+
+./ipmt index -a $TXT1
+./ipmt index -t $TXT2
+./measure_query2 $TXT1 $TXT2 $PAT
+
+rm "input"
