@@ -23,5 +23,3 @@ echo "$OUTPUT1" | ./somador
 echo "ipmt 2: "
 echo "$OUTPUT2" | ./somador
 
-rm out1
-rm out2
