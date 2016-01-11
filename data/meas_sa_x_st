@@ -18,7 +18,19 @@ ADD=$(cat out2)
 echo "index 2: "
 echo "$ADD" | ./somador
 
-./measure_query2 $TXT1 $TXT2 $PAT
 
+SZ=2
+
+while [ $SZ -lt 12 ]; do
+	./gen_filter $TXT $SZ "input"
+	echo "tamanho: $SZ"
+	./measure_query2 $TXT1 $TXT2 "input"
+	
+	let SZ=SZ+2
+done
+
+
+
+rm "input"
 rm out1
 rm out2
