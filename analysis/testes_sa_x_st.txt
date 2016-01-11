@@ -1,195 +1,198 @@
-./meas_sa_x_st dna.50MB 
+./meas_sa_x_st english.50MB english.idx 1
 index 1: 
-6.610000
+4.480000
 index 2: 
-7.440000
+4.760000
 
 tamanho: 2
 ipmt 1: 
-0.686667
+0.783333
+ipmt 2: 
+0.796667
+
+tamanho: 4
+ipmt 1: 
+0.743333
+ipmt 2: 
+0.753333
+
+tamanho: 6
+ipmt 1: 
+0.746667
+ipmt 2: 
+0.760000
+
+tamanho: 8
+ipmt 1: 
+0.766667
+ipmt 2: 
+0.750000
+
+tamanho: 10
+ipmt 1: 
+0.746667
+ipmt 2: 
+0.750000
+
+
+======================
+
+
+./meas_sa_x_st proteins.50MB proteins.idx 2
+index 1: 
+3.590000
+index 2: 
+3.910000
+
+tamanho: 2
+ipmt 1: 
+0.746667
+ipmt 2: 
+0.780000
+
+tamanho: 4
+ipmt 1: 
+0.803333
+ipmt 2: 
+0.793333
+
+tamanho: 6
+ipmt 1: 
+0.726667
+ipmt 2: 
+0.766667
+
+tamanho: 8
+ipmt 1: 
+0.830000
+ipmt 2: 
+0.813333
+
+tamanho: 10
+ipmt 1: 
+0.773333
+ipmt 2: 
+0.780000
+
+
+===============================
+
+
+ ./meas_sa_x_st sources.50MB sources.idx 3
+index 1: 
+3.000000
+index 2: 
+2.980000
+
+tamanho: 2
+ipmt 1: 
+0.740000
 ipmt 2: 
 0.723333
 
 tamanho: 4
 ipmt 1: 
-0.706667
+0.760000
 ipmt 2: 
-0.713333
+0.760000
 
 tamanho: 6
 ipmt 1: 
-0.696667
+0.746667
 ipmt 2: 
-0.710000
+0.723333
 
 tamanho: 8
 ipmt 1: 
-0.673333
+0.733333
+ipmt 2: 
+0.713333
+
+tamanho: 10
+ipmt 1: 
+0.743333
+ipmt 2: 
+0.750000
+
+
+
+==================================
+ ./meas_sa_x_st dna.50MB dna.idx 4
+index 1: 
+3.350000
+index 2: 
+4.320000
+
+tamanho: 2
+ipmt 1: 
+0.693333
+ipmt 2: 
+0.696667
+
+tamanho: 4
+ipmt 1: 
+0.706667
+ipmt 2: 
+0.730000
+
+tamanho: 6
+ipmt 1: 
+0.660000
+ipmt 2: 
+0.683333
+
+tamanho: 8
+ipmt 1: 
+0.700000
 ipmt 2: 
 0.703333
 
 tamanho: 10
 ipmt 1: 
+0.670000
+ipmt 2: 
+0.693333
+
+
+==================================
+
+./meas_sa_x_st xmls.50MB xmls.idx
+index 1: 
+3.830000
+index 2: 
+3.860000
+
+tamanho: 2
+ipmt 1: 
+0.706667
+ipmt 2: 
 0.690000
-ipmt 2: 
-0.680000
-
-=================================
-
-./meas_sa_x_st english.50MB 
-index 1: 
-6.800000
-index 2: 
-4.560000
-
-tamanho: 2
-ipmt 1: 
-0.826667
-ipmt 2: 
-0.803333
 
 tamanho: 4
-ipmt 1: 
-0.710000
-ipmt 2: 
-0.696667
-
-tamanho: 6
-ipmt 1: 
-0.726667
-ipmt 2: 
-0.736667
-
-tamanho: 8
-ipmt 1: 
-0.726667
-ipmt 2: 
-0.756667
-
-tamanho: 10
-ipmt 1: 
-0.760000
-ipmt 2: 
-0.730000
-
-
-============================
-
-
-./meas_sa_x_st proteins.50MB 
-index 1: 
-3.560000
-index 2: 
-5.090000
-
-tamanho: 2
-ipmt 1: 
-0.813333
-ipmt 2: 
-0.803333
-
-tamanho: 4
-ipmt 1: 
-0.770000
-ipmt 2: 
-0.730000
-
-tamanho: 6
-ipmt 1: 
-0.763333
-ipmt 2: 
-0.760000
-
-tamanho: 8
-ipmt 1: 
-0.770000
-ipmt 2: 
-0.760000
-
-tamanho: 10
-ipmt 1: 
-0.736667
-ipmt 2: 
-0.756667
-
-==========================================
-
-./meas_sa_x_st sources.50MB 
-index 1: 
-2.780000
-index 2: 
-3.420000
-
-tamanho: 2
-ipmt 1: 
-0.696667
-ipmt 2: 
-0.763333
-
-tamanho: 4
-ipmt 1: 
-0.710000
-ipmt 2: 
-0.696667
-
-tamanho: 6
-ipmt 1: 
-0.723333
-ipmt 2: 
-0.710000
-
-tamanho: 8
 ipmt 1: 
 0.693333
 ipmt 2: 
-0.706667
-
-tamanho: 10
-ipmt 1: 
-0.696667
-ipmt 2: 
-0.723333
-
-
-===============================
-
-./meas_sa_x_st xmls.50MB 
-index 1: 
-4.520000
-index 2: 
-4.470000
-
-tamanho: 2
-ipmt 1: 
-0.753333
-ipmt 2: 
-0.736667
-
-tamanho: 4
-ipmt 1: 
-0.660000
-ipmt 2: 
-0.673333
+0.710000
 
 tamanho: 6
 ipmt 1: 
-0.683333
+0.706667
 ipmt 2: 
-0.713333
+0.720000
 
 tamanho: 8
 ipmt 1: 
-0.736667
+0.663333
 ipmt 2: 
-0.706667
+0.663333
 
 tamanho: 10
 ipmt 1: 
-0.713333
+0.680000
 ipmt 2: 
-0.676667
+0.740000
 
-==========================
+==================================
 
 
 
