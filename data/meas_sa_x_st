@@ -1,6 +1,7 @@
 #!/bin/bash
 TXT=$1
-PAT=$2
+INDEX=$2
+PAT=$3
 
 TXT1="1$TXT"
 TXT2="2$TXT"
@@ -12,14 +13,15 @@ TXT2="2$TXT"
 ADD=$(cat out2)
 echo "index 1: "
 echo "$ADD" | ./somador
+stat -c%s "1$INDEX"
 
-/usr/bin/time --quiet -f'%S %U ' ./ipmt index -a $TXT2 1> out1 2> out2
+/usr/bin/time --quiet -f'%S %U ' ./ipmt index -t $TXT2 1> out1 2> out2
 ADD=$(cat out2)
 echo "index 2: "
 echo "$ADD" | ./somador
+stat -c%s "2$INDEX"
 
-
-SZ=2
+SZ=0
 
 while [ $SZ -lt 12 ]; do
 	./gen_filter $TXT $SZ "input"
