@@ -1,0 +1,767 @@
+
+./measure_compress english.50MB english.com
+./measure_compress dna.50MB dna.com
+./measure_compress sources.50MB sources.com
+./measure_compress proteins.50MB proteins.com
+./measure_compress xmls.50MB xmls.com
+
+=================================================================================================
+
+
+ibfs@ibfs-virtualBox:~/Repository/mhss/pcc/data$ ./measure_compress english.50MB english.com
+tamanho: 1 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+2.343333
+792184
+LZ77 Descompressão (tempo): 
+0.140000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.266667
+651358
+LZ78 Descompressão (tempo): 
+0.123333
+
+
+
+tamanho: 2 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+4.710000
+1624018
+LZ77 Descompressão (tempo): 
+0.290000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.613333
+1323194
+LZ78 Descompressão (tempo): 
+0.266667
+
+
+
+tamanho: 3 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+7.120000
+2484551
+LZ77 Descompressão (tempo): 
+0.450000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.926667
+1985918
+LZ78 Descompressão (tempo): 
+0.390000
+
+
+
+tamanho: 4 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+9.583333
+3349129
+LZ77 Descompressão (tempo): 
+0.620000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.286667
+2628170
+LZ78 Descompressão (tempo): 
+0.536667
+
+
+
+tamanho: 5 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+12.353333
+4203708
+LZ77 Descompressão (tempo): 
+0.776667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.650000
+3245661
+LZ78 Descompressão (tempo): 
+0.653333
+
+
+
+tamanho: 6 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+14.680000
+5051178
+LZ77 Descompressão (tempo): 
+0.920000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.036667
+3842582
+LZ78 Descompressão (tempo): 
+0.830000
+
+
+
+tamanho: 7 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+17.130000
+5892383
+LZ77 Descompressão (tempo): 
+1.093333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.450000
+4427036
+LZ78 Descompressão (tempo): 
+0.950000
+
+
+
+tamanho: 8 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+19.773333
+6725622
+LZ77 Descompressão (tempo): 
+1.366667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.703333
+5016158
+LZ78 Descompressão (tempo): 
+1.086667
+
+
+
+tamanho: 9 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+22.573333
+7564344
+LZ77 Descompressão (tempo): 
+1.503333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+3.166667
+5595395
+LZ78 Descompressão (tempo): 
+1.233333
+
+
+
+tamanho: 10 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+25.430000
+8431491
+LZ77 Descompressão (tempo): 
+1.556667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+3.493333
+6205635
+LZ78 Descompressão (tempo): 
+1.346667
+
+=================================================================================================
+
+ibfs@ibfs-virtualBox:~/Repository/mhss/pcc/data$ ./measure_compress dna.50MB dna.com
+tamanho: 1 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+2.633333
+451915
+LZ77 Descompressão (tempo): 
+0.080000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.163333
+389077
+LZ78 Descompressão (tempo): 
+0.070000
+
+
+
+tamanho: 2 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+5.263333
+905945
+LZ77 Descompressão (tempo): 
+0.163333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.366667
+769910
+LZ78 Descompressão (tempo): 
+0.146667
+
+
+
+tamanho: 3 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+7.300000
+1355091
+LZ77 Descompressão (tempo): 
+0.246667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.586667
+1143726
+LZ78 Descompressão (tempo): 
+0.246667
+
+
+
+tamanho: 4 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+10.763333
+1808379
+LZ77 Descompressão (tempo): 
+0.346667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.823333
+1520476
+LZ78 Descompressão (tempo): 
+0.310000
+
+
+
+tamanho: 5 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+13.100000
+2260994
+LZ77 Descompressão (tempo): 
+0.426667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.050000
+1897039
+LZ78 Descompressão (tempo): 
+0.410000
+
+
+
+tamanho: 6 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+15.373333
+2713137
+LZ77 Descompressão (tempo): 
+0.536667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.260000
+2274225
+LZ78 Descompressão (tempo): 
+0.493333
+
+
+
+tamanho: 7 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+18.700000
+3165906
+LZ77 Descompressão (tempo): 
+0.623333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.576667
+2653816
+LZ78 Descompressão (tempo): 
+0.616667
+
+
+
+tamanho: 8 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+21.950000
+3623318
+LZ77 Descompressão (tempo): 
+0.706667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.876667
+3034718
+LZ78 Descompressão (tempo): 
+0.676667
+
+
+
+tamanho: 9 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+24.083333
+4079183
+LZ77 Descompressão (tempo): 
+0.816667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.056667
+3411898
+LZ78 Descompressão (tempo): 
+0.803333
+
+
+
+tamanho: 10 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+27.420000
+4533865
+LZ77 Descompressão (tempo): 
+0.893333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.230000
+3787279
+LZ78 Descompressão (tempo): 
+0.863333
+
+=================================================================================================
+
+ibfs@ibfs-virtualBox:~/Repository/mhss/pcc/data$ ./measure_compress sources.50MB sources.com
+tamanho: 1 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+1.873333
+512696
+LZ77 Descompressão (tempo): 
+0.113333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.233333
+597845
+LZ78 Descompressão (tempo): 
+0.120000
+
+
+
+tamanho: 2 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+3.213333
+1085075
+LZ77 Descompressão (tempo): 
+0.220000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.556667
+1225221
+LZ78 Descompressão (tempo): 
+0.250000
+
+
+
+tamanho: 3 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+4.473333
+1508827
+LZ77 Descompressão (tempo): 
+0.283333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.746667
+1774459
+LZ78 Descompressão (tempo): 
+0.336667
+
+
+
+tamanho: 4 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+5.626667
+2008655
+LZ77 Descompressão (tempo): 
+0.400000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.083333
+2385666
+LZ78 Descompressão (tempo): 
+0.490000
+
+
+
+tamanho: 5 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+7.180000
+2466050
+LZ77 Descompressão (tempo): 
+0.553333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.446667
+2957920
+LZ78 Descompressão (tempo): 
+0.650000
+
+
+
+tamanho: 6 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+9.150000
+2969546
+LZ77 Descompressão (tempo): 
+0.623333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.643333
+3549376
+LZ78 Descompressão (tempo): 
+0.706667
+
+
+
+tamanho: 7 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+10.650000
+3437866
+LZ77 Descompressão (tempo): 
+0.673333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.033333
+4112472
+LZ78 Descompressão (tempo): 
+0.880000
+
+
+
+tamanho: 8 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+11.733333
+4027978
+LZ77 Descompressão (tempo): 
+0.773333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.240000
+4726736
+LZ78 Descompressão (tempo): 
+0.970000
+
+
+
+tamanho: 9 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+13.923333
+4583769
+LZ77 Descompressão (tempo): 
+0.980000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.713333
+5277891
+LZ78 Descompressão (tempo): 
+1.120000
+
+
+
+tamanho: 10 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+15.330000
+5109183
+LZ77 Descompressão (tempo): 
+1.080000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+3.026667
+5861397
+LZ78 Descompressão (tempo): 
+1.176667
+
+=================================================================================================
+
+ibfs@ibfs-virtualBox:~/Repository/mhss/pcc/data$ ./measure_compress proteins.50MB proteins.com
+tamanho: 1 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+2.780000
+692159
+LZ77 Descompressão (tempo): 
+0.120000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.340000
+760809
+LZ78 Descompressão (tempo): 
+0.156667
+
+
+
+tamanho: 2 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+5.383333
+1341146
+LZ77 Descompressão (tempo): 
+0.263333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.696667
+1486872
+LZ78 Descompressão (tempo): 
+0.296667
+
+
+
+tamanho: 3 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+8.180000
+2174571
+LZ77 Descompressão (tempo): 
+0.403333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.080000
+2262549
+LZ78 Descompressão (tempo): 
+0.430000
+
+
+
+tamanho: 4 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+8.253333
+2572131
+LZ77 Descompressão (tempo): 
+0.516667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.703333
+2876939
+LZ78 Descompressão (tempo): 
+0.596667
+
+
+
+tamanho: 5 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+13.280000
+3390958
+LZ77 Descompressão (tempo): 
+0.613333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.910000
+3631210
+LZ78 Descompressão (tempo): 
+0.746667
+
+
+
+tamanho: 6 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+12.610000
+3669132
+LZ77 Descompressão (tempo): 
+0.666667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.996667
+4128530
+LZ78 Descompressão (tempo): 
+0.830000
+
+
+
+tamanho: 7 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+14.796667
+4246447
+LZ77 Descompressão (tempo): 
+0.876667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.396667
+4743390
+LZ78 Descompressão (tempo): 
+0.980000
+
+
+
+tamanho: 8 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+16.153333
+4655694
+LZ77 Descompressão (tempo): 
+0.946667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.820000
+5268289
+LZ78 Descompressão (tempo): 
+1.063333
+
+
+
+tamanho: 9 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+17.546667
+5028631
+LZ77 Descompressão (tempo): 
+0.943333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+3.110000
+5791005
+LZ78 Descompressão (tempo): 
+1.263333
+
+
+
+tamanho: 10 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+19.240000
+5414518
+LZ77 Descompressão (tempo): 
+1.010000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+3.343333
+6308351
+LZ78 Descompressão (tempo): 
+1.270000
+
+=================================================================================================
+
+ibfs@ibfs-virtualBox:~/Repository/mhss/pcc/data$ ./measure_compress xmls.50MB xmls.com
+tamanho: 1 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+1.056667
+375514
+LZ77 Descompressão (tempo): 
+0.073333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.160000
+345107
+LZ78 Descompressão (tempo): 
+0.080000
+
+
+
+tamanho: 2 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+2.220000
+751220
+LZ77 Descompressão (tempo): 
+0.150000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.373333
+666731
+LZ78 Descompressão (tempo): 
+0.153333
+
+
+
+tamanho: 3 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+3.203333
+1100082
+LZ77 Descompressão (tempo): 
+0.226667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.583333
+983555
+LZ78 Descompressão (tempo): 
+0.233333
+
+
+
+tamanho: 4 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+4.213333
+1511588
+LZ77 Descompressão (tempo): 
+0.316667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.790000
+1299029
+LZ78 Descompressão (tempo): 
+0.323333
+
+
+
+tamanho: 5 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+5.450000
+1839078
+LZ77 Descompressão (tempo): 
+0.376667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+0.936667
+1614312
+LZ78 Descompressão (tempo): 
+0.390000
+
+
+
+tamanho: 6 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+5.896667
+2219473
+LZ77 Descompressão (tempo): 
+0.533333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.173333
+1948724
+LZ78 Descompressão (tempo): 
+0.463333
+
+
+
+tamanho: 7 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+7.436667
+2610518
+LZ77 Descompressão (tempo): 
+0.560000
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.393333
+2265342
+LZ78 Descompressão (tempo): 
+0.550000
+
+
+
+tamanho: 8 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+7.890000
+2977492
+LZ77 Descompressão (tempo): 
+0.623333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.663333
+2575705
+LZ78 Descompressão (tempo): 
+0.613333
+
+
+
+tamanho: 9 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+9.143333
+3314715
+LZ77 Descompressão (tempo): 
+0.676667
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+1.806667
+2867042
+LZ78 Descompressão (tempo): 
+0.683333
+
+
+
+tamanho: 10 MB
+LZ77 Compressão (tempo e tamanho do arquivo comprimido): 
+10.290000
+3704120
+LZ77 Descompressão (tempo): 
+0.793333
+
+LZ78 Compressão (tempo e tamanho do arquivo comprimido): 
+2.086667
+3163274
+LZ78 Descompressão (tempo): 
+0.780000
+
+
+============================================================
+
+

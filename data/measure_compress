@@ -1,0 +1,80 @@
+#!/bin/bash
+TXT=$1
+ZIP=$2
+
+
+SZ=0
+while [ $SZ -lt 10 ]; do
+	let SZ=SZ+1
+	
+	./fmb $TXT "$SZ$TXT" $SZ
+	echo "tamanho: $SZ MB"
+	
+	CNT=3
+	OUTPUT=""
+	while [ $CNT -gt 0 ]; do
+		/usr/bin/time --quiet -f'%S %U ' ./ipmt compress -7 "$SZ$TXT" 1> out1 2> out2
+		ADD=$(cat out2)
+		OUTPUT+="$ADD"
+		
+		let CNT=CNT-1
+	done
+
+	echo "LZ77 Compressão (tempo e tamanho do arquivo comprimido): "
+	echo "$OUTPUT" | ./somador
+	stat -c%s "$SZ$ZIP"
+	
+	CNT=3
+	OUTPUT=""
+	while [ $CNT -gt 0 ]; do
+		/usr/bin/time --quiet -f'%S %U ' ./ipmt decompress "$SZ$ZIP" 1> out1 2> out2
+		ADD=$(cat out2)
+		OUTPUT+="$ADD"
+		
+		let CNT=CNT-1
+	done
+	
+	echo "LZ77 Descompressão (tempo): "
+	echo "$OUTPUT" | ./somador
+	echo ""
+	
+	rm "$SZ$ZIP"
+	
+	# LZ 78
+	CNT=3
+	OUTPUT=""
+	while [ $CNT -gt 0 ]; do
+		/usr/bin/time --quiet -f'%S %U ' ./ipmt compress -8 "$SZ$TXT" 1> out1 2> out2
+		ADD=$(cat out2)
+		OUTPUT+="$ADD"
+		
+		let CNT=CNT-1
+	done
+
+	echo "LZ78 Compressão (tempo e tamanho do arquivo comprimido): "
+	echo "$OUTPUT" | ./somador
+	stat -c%s "$SZ$ZIP"
+	
+	CNT=3
+	OUTPUT=""
+	while [ $CNT -gt 0 ]; do
+		/usr/bin/time --quiet -f'%S %U ' ./ipmt decompress "$SZ$ZIP" 1> out1 2> out2
+		ADD=$(cat out2)
+		OUTPUT+="$ADD"
+		
+		let CNT=CNT-1
+	done
+	
+	echo "LZ78 Descompressão (tempo): "
+	echo "$OUTPUT" | ./somador
+	echo ""
+	
+	echo ""
+	echo ""
+	
+	rm "$SZ$ZIP"
+	rm "$SZ$TXT"
+done
+
+
+
