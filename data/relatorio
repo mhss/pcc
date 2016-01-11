@@ -30,8 +30,9 @@ Algoritmos de Compressão
 - LZ77
 O algoritmo LZ77 implementado foi a versão padrão do algoritmo, com tamanho de 1024 para cada array (dictionary e preview), e utilizando-se o algoritmo Aho-Corasick no preview, para encontrar o maior matching no array dictionary, em tempo linear no tamanho dos arrays.
 
+- LZ78
+O algoritmo LZ78, no momento de codificar o texto, utiliza uma estrutura de dados chamada Trie que funcionará como o dicionário necessário ao algoritmo. Esta Trie é implementada através da struct LzNode, declarada no mesmo arquivo do LZ78. No momento de descodificar o texto, é utilizado apenas um array de tamanho dinâmico (std::vector) para realização do processo.
 
-LZ78
 
 Detalhes
 
@@ -45,7 +46,12 @@ Testes
 
 RAEL MUDA AQUI
 Os testes da ferramenta foram realizados num computador com processador Intel Core i3 de 2.53GHz com 3.7 GB de memória RAM, com um SO Ubuntu 13.10 de 32 bits.
+
+
 Medimos o tempo médio gasto para indexar arquivos de texto, bem como o tamanho final dos arquivos gerados. Também medimos o tempo médio gasto com consultas de conjuntos de padrões nos índices dos textos. Procuramos variar o tipo e tamanho dos textos e padrões buscados, algoritmos de compressão e tipos de índices utilizados. O desempenho das consultas do projeto foi comparado com o do programa grep ...
+
+--------------
+Os testes da ferramenta foram realizados em uma máquina virtual XUbuntu. A máquina hospedeira possui processador Intel Core i7 de 2.00 GHz, memória de 16GB, com SO Windows 8.1. Já a máquina virtual, possui 8 GB de memória e dois, dos 4 núcleos de processamento.
 
 
 
